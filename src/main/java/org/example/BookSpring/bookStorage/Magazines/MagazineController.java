@@ -18,29 +18,29 @@ public class MagazineController {
     }
 
     @GetMapping("/magazines")
-    public List<ItemOp> getAllBooks(){
+    public List<ItemOp> getAllMagazines(){
         return magazineService.getAll();
     }
 
     @GetMapping("/magazines/{magazineId}")
-    public ItemOp getBook(@PathVariable Integer magazineId){
+    public ItemOp getMagazine(@PathVariable Integer magazineId){
         return magazineService.get(magazineId)
                 .map(item -> (Magazine) item)
                 .orElseThrow(() -> new ItemNotFoundException(magazineId));
     }
 
     @PostMapping("/magazines")
-    public Boolean addBook(@RequestBody Book book){
+    public Boolean addMagazine(@RequestBody Book book){
         return magazineService.add(book);
     }
 
     @DeleteMapping("/magazines/{magazineId}")
-    public Boolean deleteBook(@PathVariable Integer magazineId){
+    public Boolean deleteMagazine(@PathVariable Integer magazineId){
         return magazineService.delete(magazineId);
     }
 
     @PutMapping("/magazines/{magazineId}")
-    public ItemOp updateBook(@PathVariable Integer magazineId, @RequestBody Magazine nMaga)
+    public ItemOp updateMagazine(@PathVariable Integer magazineId, @RequestBody Magazine nMaga)
     {
         return magazineService.update(magazineId, nMaga)
                 .map(magazine -> {

@@ -4,12 +4,14 @@ import org.example.BookSpring.bookStorage.ItemOp;
 import org.example.BookSpring.repository.HashRepo;
 import org.example.BookSpring.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Service
 public class MagazineService {
     private final Repository<ItemOp> repository;
 
