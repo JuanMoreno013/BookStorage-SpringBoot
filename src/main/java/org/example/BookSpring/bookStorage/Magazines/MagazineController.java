@@ -30,8 +30,8 @@ public class MagazineController {
     }
 
     @PostMapping("/magazines")
-    public Boolean addMagazine(@RequestBody Book book){
-        return magazineService.add(book);
+    public Boolean addMagazine(@RequestBody Magazine magazine){
+        return magazineService.add(magazine);
     }
 
     @DeleteMapping("/magazines/{magazineId}")

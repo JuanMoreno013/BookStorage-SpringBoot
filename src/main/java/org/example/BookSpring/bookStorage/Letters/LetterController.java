@@ -43,7 +43,7 @@ public class LetterController {
     {
         return letterService.update(letterId, nLetter)
                 .map(letter -> {
-                    letter.setId(nLetter.getId());
+                    letter.setId(letter.getId());
                     letter.setTitle(nLetter.getTitle());
                     letter.setAuthor(nLetter.getAuthor());
                     letter.setDateWrite(nLetter.getDateWrite());
