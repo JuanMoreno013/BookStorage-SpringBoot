@@ -17,10 +17,6 @@ public class Book extends ItemOp {
     private final String status;
     private final String editorial;
 
-
-
-
-
     public Book(String title, String author, int pages, LocalDate dateWrite, String subject, String nsbn, String editorial, String status) {
 
         super(title, author, pages, dateWrite);
@@ -31,8 +27,6 @@ public class Book extends ItemOp {
         this.editorial= editorial;
         this.status= status;
     }
-
-
 
     public void ValidationP(Object... arrayOfObj){
         for (Object obj: arrayOfObj) {
@@ -56,8 +50,6 @@ public class Book extends ItemOp {
         if (editorial.isBlank())
             throw new IllegalArgumentException("Book: Editorial is Blank");
     }
-
-
 
     public String toString() {
         return

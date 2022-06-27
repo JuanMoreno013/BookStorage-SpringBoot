@@ -18,8 +18,6 @@ public class BookController  {
         this.bookService = bookService;
     }
 
-
-
     @GetMapping("/books")
     public List<ItemOp> getAllBooks(){
         return bookService.getAll();

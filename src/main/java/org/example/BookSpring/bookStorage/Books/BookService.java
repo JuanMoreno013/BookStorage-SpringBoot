@@ -14,29 +14,12 @@ import java.util.Optional;
 
 @Service
 public class BookService {
-
-
     private final Repository<ItemOp> repository;
 
     @Autowired
         public BookService(Repository<ItemOp> repository) {
         this.repository = new HashRepo<>();
     }
-
-
-//    static {
-//        final Book b1 = new Book("Preparing bool",
-//                "null",
-//                358,
-//                LocalDate.parse("2001-03-12"),
-//                "Terror",
-//                "980-92-23",
-//                "Princeton",
-//                "New");
-//
-//
-//        repository.add(1,b1);
-//    }
 
     public List<ItemOp> getAll() {
         return new ArrayList<>(repository.getAll());
@@ -63,29 +46,7 @@ public class BookService {
 
     public Optional<ItemOp> update(int bookId, ItemOp bookItem){
 
-
         return repository.update(bookId, bookItem);
-//        return repository.update(bookId, bookItem);
-//                .map(item -> (Book) item)
-//                .orElseThrow(() ->new IllegalArgumentException(""));
-
-
-//                .map(item -> {
-//                    item.setId(bookItem.getId());
-//                    return (Book) item;
-//                })
-//                .orElseThrow(() ->new IllegalArgumentException(""));
-
-
-//        Book updateBook =  repository.update(bookId,bookItem)
-//                .map(book -> {
-//                    book.setTitle(bookItem.getTitle());
-//
-//                    })
-//                .orElseGet(()-> {
-//                    bookItem.setId(bookId);
-//                    return repository.a
-//                })
     }
 
 }
