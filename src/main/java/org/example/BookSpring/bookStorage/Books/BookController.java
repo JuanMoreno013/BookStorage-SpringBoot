@@ -9,24 +9,23 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class BookController  {
+public class BookController{
 
-    private final BookService bookService;
+    private final BookService<Book> bookService;
 
     @Autowired
-    public BookController(BookService bookService) {
+    public BookController(BookService<Book> bookService) {
         this.bookService = bookService;
     }
 
     @GetMapping("/books")
-    public List<ItemOp> getAllBooks(){
+    public List<Book> getAllBooks(){
         return bookService.getAll();
     }
 
     @GetMapping("/books/{bookId}")
-    public ItemOp getBook(@PathVariable Integer bookId){
+    public Book getBook(@PathVariable Integer bookId){
         return bookService.get(bookId)
-                .map(item -> (Book) item)
                 .orElseThrow(() -> new ItemNotFoundException(bookId));
     }
 
@@ -41,7 +40,7 @@ public class BookController  {
     }
 
     @PutMapping("/books/{bookId}")
-    public ItemOp updateBook(@PathVariable Integer bookId, @RequestBody Book nbook)
+    public Book updateBook(@PathVariable Integer bookId, @RequestBody Book nbook)
     {
         return bookService.update(bookId, nbook)
                 .map(book -> {
@@ -51,7 +50,7 @@ public class BookController  {
                     book.setDateWrite(nbook.getDateWrite());
                     book.setPages(nbook.getPages());
 
-                    return (Book) book;
+                    return book;
                 })
                 .orElseThrow(() ->new IllegalArgumentException(""));
     }

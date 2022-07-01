@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class LetterController {
-    private final LetterService letterService;
+public class LetterController<T> {
+    private final LetterService<T> letterService;
 
     @Autowired
-    public LetterController(LetterService letterService) {
+    public LetterController(LetterService<T> letterService) {
         this.letterService = letterService;
     }
 
