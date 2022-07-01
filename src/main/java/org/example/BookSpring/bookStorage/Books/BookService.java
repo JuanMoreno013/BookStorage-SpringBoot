@@ -1,44 +1,45 @@
 package org.example.BookSpring.bookStorage.Books;
 
 import org.example.BookSpring.bookStorage.ItemOp;
-import org.example.BookSpring.bookStorage.Notification.Notification;
+import org.example.BookSpring.bookStorage.Letters.Letter;
 import org.example.BookSpring.bookStorage.Notification.Observer;
 import org.example.BookSpring.bookStorage.Notification.SendMessage;
-import org.example.BookSpring.repository.HashRepo;
 import org.example.BookSpring.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-public class BookService extends SendMessage{
+public class BookService<T> extends SendMessage<T>{
     private final Repository<ItemOp> repository;
-    private final Observer observer;
-//    SendMessage bookMessage = new SendMessage();
+    //    SendMessage bookMessage = new SendMessage();
 
     @Autowired
-        public BookService(Repository<ItemOp> repository, Observer observer) {
-        this.observer = observer;
-        addObserver(this.observer);
+        public BookService(Repository<ItemOp> repository, Observer<T> observer) {
+        addObserver(observer);
         this.repository = repository;
     }
 
-    public List<ItemOp> getAll() {
-        return new ArrayList<>(repository.getAll());
+    public List<Book> getAll() {
+        return repository.getAll().
+                     stream()
+                     .filter(e-> e instanceof Book)
+                     .map(item -> (Book) item)
+                     .collect(Collectors.toList());
     }
 
-    public Optional<ItemOp> get(int bookId) {
-        return repository.get(bookId);
+    public Optional<Book> get(int bookId) {
+        return repository.get(bookId)
+                .map(item -> (Book) item);
     }
 
     public Boolean add(ItemOp objItem){
         Objects.requireNonNull(objItem);
 
-        //        observer.update();
         setMessage("New Book Added");
         notifyAllObservers();
 
@@ -50,13 +51,33 @@ public class BookService extends SendMessage{
         if(bookId<0)
             throw new IllegalArgumentException();
 
-        repository.remove(bookId);
-        return true;
+        boolean CheckBook = repository.get(bookId)
+                .filter(item -> item instanceof Book)
+                .isPresent();
+
+        if (CheckBook) {
+            repository.remove(bookId);
+            setMessage("Book Removed! ");
+            notifyAllObservers();
+            return true;
+        }
+
+        return false;
     }
 
-    public Optional<ItemOp> update(int bookId, ItemOp bookItem){
+    public Optional<Book> update(int bookId, ItemOp bookItem){
 
-        return repository.update(bookId, bookItem);
+        boolean CheckBook = repository.get(bookId)
+                .filter(item -> item instanceof Book)
+                .isPresent();
+
+        if (!CheckBook) {
+            return Optional.empty();
+        }
+        bookItem.setId(bookId);
+        return repository.update(bookId, bookItem)
+                .map(e -> (Book) e);
+
     }
 
 }
