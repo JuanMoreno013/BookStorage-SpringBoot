@@ -1,24 +1,30 @@
 package org.example.BookSpring.bookStorage.Books;
 
 import org.example.BookSpring.bookStorage.ItemOp;
+import org.example.BookSpring.bookStorage.Notification.Notification;
+import org.example.BookSpring.bookStorage.Notification.Observer;
+import org.example.BookSpring.bookStorage.Notification.SendMessage;
 import org.example.BookSpring.repository.HashRepo;
 import org.example.BookSpring.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class BookService {
+public class BookService extends SendMessage{
     private final Repository<ItemOp> repository;
+    private final Observer observer;
+//    SendMessage bookMessage = new SendMessage();
 
     @Autowired
-        public BookService(Repository<ItemOp> repository) {
-        this.repository = new HashRepo<>();
+        public BookService(Repository<ItemOp> repository, Observer observer) {
+        this.observer = observer;
+        addObserver(this.observer);
+        this.repository = repository;
     }
 
     public List<ItemOp> getAll() {
@@ -31,6 +37,10 @@ public class BookService {
 
     public Boolean add(ItemOp objItem){
         Objects.requireNonNull(objItem);
+
+        //        observer.update();
+        setMessage("New Book Added");
+        notifyAllObservers();
 
         repository.add(objItem.getId(),objItem);
         return true;
