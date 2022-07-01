@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-public class Notification implements Observer {
+public class Notification<T> implements Observer<T> {
     //Concrete subscriber
 
     private String messageNewItem;
@@ -17,9 +17,5 @@ public class Notification implements Observer {
         this.setMessageNewItem(messageNewItem);
         System.out.println(messageNewItem);
     }
-
-//    public Notification(String message){
-//        this.messageNewItem= message;
-//    }
 
 }

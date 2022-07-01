@@ -1,7 +1,7 @@
 package org.example.BookSpring.bookStorage.Notification;
 
-public interface PublisherI {
-    void removeObserver(Observer observer);
-    void addObserver(Observer observer);
+public interface PublisherI<T> {
+    void removeObserver(Observer<T> observer);
+    void addObserver(Observer<T> observer);
     void notifyAllObservers();
 }
