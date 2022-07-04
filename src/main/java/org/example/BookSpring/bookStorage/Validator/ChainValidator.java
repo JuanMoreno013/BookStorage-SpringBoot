@@ -1,35 +1,13 @@
 package org.example.BookSpring.bookStorage.Validator;
 
-import org.example.BookSpring.bookStorage.Books.Book;
-import org.example.BookSpring.bookStorage.Letters.Letter;
-import org.example.BookSpring.bookStorage.Magazines.Magazine;
 
 import java.time.LocalDate;
 
 public class ChainValidator {
-//    public Validator<T>  chainIm;
-//
-//    public T StringValidator(T string){
-////        Validator<T> some = new NotBlank<>(null);
-////        chainIm = (new NotNull<T>(some));
-//        chainIm.processValidation(string);
-//        return string;
-//    }
-//    public void ChainValidator(){
-//        StringValidator(string);
-//    }
-
-//    private void buildChain(){
-//        chain = new NotNull(new PagesValidator((null)));
-//    }
-
-
-//    Validator<T> chain;
 
     Validator<String> chainString;
     Validator<Integer> chainInteger;
     Validator<LocalDate> chainDate;
-
     Validator<Integer> chainLetter;
 
 
