@@ -1,16 +1,14 @@
 package org.example.BookSpring.bookStorage.Letters;
 
-import org.example.BookSpring.bookStorage.Books.Book;
+
 import org.example.BookSpring.bookStorage.ItemOp;
 import org.example.BookSpring.bookStorage.Notification.Observer;
 import org.example.BookSpring.bookStorage.Notification.SendMessage;
-import org.example.BookSpring.repository.HashRepo;
 import org.example.BookSpring.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
