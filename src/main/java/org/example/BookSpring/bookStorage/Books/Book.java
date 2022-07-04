@@ -3,6 +3,7 @@ package org.example.BookSpring.bookStorage.Books;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.BookSpring.bookStorage.ItemOp;
+import org.example.BookSpring.bookStorage.Validator.ChainValidator;
 
 
 import java.time.LocalDate;
@@ -17,43 +18,20 @@ public class Book extends ItemOp {
     private final String status;
     private final String editorial;
 
+    private static  ChainValidator validateChain = new ChainValidator();
+
     public Book(String title, String author, int pages, LocalDate dateWrite, String subject, String nsbn, String editorial, String status) {
 
         super(title, author, pages, dateWrite);
-        validate(nsbn,subject,status,editorial);
 
-        this.subject= subject;
-        this.nsbn= nsbn;
-        this.editorial= editorial;
-        this.status= status;
-    }
-
-    public void ValidationP(Object... arrayOfObj){
-        for (Object obj: arrayOfObj) {
-            if (obj == null) {
-                throw new IllegalArgumentException();
-            }
-        }
-    }
-    private void validate(String subject, String id, String editorial, String status) {
-        ValidationP(id, subject, status, editorial);
-
-        if (subject.isBlank())
-            throw new IllegalArgumentException("Book: Blank Subject");
-
-        if (status.isBlank())
-            throw new IllegalArgumentException("Book: Status is Blank");
-
-        if (id.isBlank())
-            throw new IllegalArgumentException("Book: ISBN es Blank ");
-
-        if (editorial.isBlank())
-            throw new IllegalArgumentException("Book: Editorial is Blank");
+        this.subject= validateChain.processValidator(subject);
+        this.nsbn= validateChain.processValidator(nsbn);
+        this.editorial= validateChain.processValidator(editorial);
+        this.status= validateChain.processValidator(status);
     }
 
     public String toString() {
         return
-
                 super.toString()+
                 "\n Subject: " + getSubject() +
                 "\n ISBN: " + getNsbn() +

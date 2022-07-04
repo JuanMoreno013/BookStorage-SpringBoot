@@ -2,7 +2,8 @@ package org.example.BookSpring.bookStorage;
 
 import lombok.Getter;
 import lombok.Setter;
-
+import org.example.BookSpring.bookStorage.Validator.ChainValidator;
+import org.example.BookSpring.bookStorage.Validator.Validator;
 
 
 import java.time.LocalDate;
@@ -18,49 +19,21 @@ public abstract class ItemOp {
     private  int pages;
     private  LocalDate dateWrite;
 
-//    private static int prevId = 1;
-
+    private static  ChainValidator validateChain = new ChainValidator();
     private static int nextId = 1;
 
     public ItemOp(String title, String author , int pages, LocalDate dateWrite){
 
-        validate(title, author, pages, dateWrite);
         this.id = nextId++;
-        this.title = title;
-        this.author = author;
-        this.pages = pages;
-        this.dateWrite = dateWrite;
-    }
+        this.title = validateChain.processValidator(title);
+        this.author = validateChain.processValidator(author);
+        this.pages = validateChain.processValidator(pages);
+        this.dateWrite = validateChain.processValidator(dateWrite);
 
-
-
-     public void ValidationP(Object... arrayOfObj){
-        for (Object obj: arrayOfObj) {
-            if (obj == null) {
-                throw new IllegalArgumentException();
-            }
-        }
-     }
-    private void validate(String title, String author , int pages, LocalDate dateWrite) {
-        ValidationP(title, author, dateWrite);
-
-        if (title.isBlank())
-            throw new IllegalArgumentException(" Blank title");
-
-        if (author.isBlank())
-            throw new IllegalArgumentException(" Author Blank");
-
-        if (dateWrite.isAfter(LocalDate.now()))
-            throw new IllegalArgumentException("Date wrong");
-
-        if (pages < 1)
-            throw new IllegalArgumentException( "Error Pages! ");
     }
     public String toString() {
         return
-
                 "\n Id: " + getId() +
-
                 "\n Title: " + getTitle() +
                 "\n Author: " + getAuthor() +
                 "\n Pages: " + getPages() +
