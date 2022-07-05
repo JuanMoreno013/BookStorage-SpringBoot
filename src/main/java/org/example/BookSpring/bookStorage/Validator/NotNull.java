@@ -1,17 +1,15 @@
 package org.example.BookSpring.bookStorage.Validator;
 
-import org.example.BookSpring.bookStorage.ItemOp;
+public class NotNull extends Validator{
 
-public class NotNull<T> extends Validator<T>{
-
-    public NotNull(Validator<T> nextValidator){
+    public NotNull(Validator nextValidator){
         super(nextValidator);
     }
 
     @Override
-    public void processValidation(T request) {
+    public void processValidation(Object request) {
         if (request== null)
-            throw new IllegalArgumentException(" It is Null");
+            throw new IllegalArgumentException(" Something is NULL !");
 
         super.processValidation(request);
     }

@@ -1,17 +1,18 @@
 package org.example.BookSpring.bookStorage.Validator;
 
-import org.example.BookSpring.bookStorage.ItemOp;
 
-public class PagesValidator<T> extends Validator<T> {
+public class PagesValidator extends Validator {
 
-    protected PagesValidator(Validator<T> nextValidation) {
+    protected PagesValidator(Validator nextValidation) {
         super(nextValidation);
     }
 
     @Override
-    public void processValidation(T request) {
-        if ( (Integer)request < 1 )
-            throw new IllegalArgumentException(" Wrong Pages !");
+    public void processValidation(Object request) {
+        if(request instanceof Integer){
+            if ( (Integer)request < 1 )
+                throw new IllegalArgumentException(" Wrong Number !");
+        }
 
 
         super.processValidation(request);

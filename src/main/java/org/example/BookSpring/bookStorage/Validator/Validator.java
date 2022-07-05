@@ -1,15 +1,12 @@
 package org.example.BookSpring.bookStorage.Validator;
 
+import lombok.AllArgsConstructor;
 
-public abstract class Validator<T> implements ValidatorI<T>{
+@AllArgsConstructor
+public abstract class Validator implements ValidatorI{
+    private final Validator nextValidation;
 
-    private final Validator<T> nextValidation;
-
-    public Validator(Validator<T> nextValidation) {
-        this.nextValidation = nextValidation;
-    }
-
-    public void processValidation(T request){
+    public void processValidation(Object request){
         if(nextValidation != null)
             nextValidation.processValidation(request);
     }

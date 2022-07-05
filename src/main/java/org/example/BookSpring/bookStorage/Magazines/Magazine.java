@@ -23,7 +23,7 @@ public class Magazine extends ItemOp {
         super(title, author, pages, dateWrite);
 
 
-        this.volume= validateChain.processValidator2(volume);
+        this.volume= validateChain.processValidator(volume);
         this.subject= validateChain.processValidator(subject);
         this.editorial= validateChain.processValidator(editorial);
 

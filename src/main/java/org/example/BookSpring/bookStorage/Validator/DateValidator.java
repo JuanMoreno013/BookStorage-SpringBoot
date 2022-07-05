@@ -2,16 +2,19 @@ package org.example.BookSpring.bookStorage.Validator;
 
 import java.time.LocalDate;
 
-public class DateValidator<T extends LocalDate> extends Validator<T>{
+public class DateValidator extends Validator{
 
-    public DateValidator(Validator<T> nextValidation) {
+    public DateValidator(Validator nextValidation) {
         super(nextValidation);
     }
 
     @Override
-    public void processValidation(T request) {
-        if (request.isAfter(LocalDate.now()))
-            throw new IllegalArgumentException(" Wrong Date! ");
+    public void processValidation(Object request) {
+        if(request instanceof LocalDate)
+        {
+            if ( ((LocalDate) request).isAfter(LocalDate.now()))
+                throw new IllegalArgumentException(" Wrong Date! ");
+        }
 
         super.processValidation(request);
     }

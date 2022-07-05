@@ -1,15 +1,19 @@
 package org.example.BookSpring.bookStorage.Validator;
 
-public class LengthValidator<T extends String> extends Validator<T>{
+public class LengthValidator extends Validator{
 
-    public LengthValidator(Validator<T> nextValidation) {
+    public LengthValidator(Validator nextValidation) {
         super(nextValidation);
     }
 
     @Override
-    public void processValidation(T request) {
-        if (request.length() > 20 || request.length() < 3)
-            throw new IllegalArgumentException("Wrong length! ");
+    public void processValidation(Object request) {
+        if (request instanceof String)
+        {
+            if (((String)request).length() > 20 || ((String)request).length() < 3)
+                throw new IllegalArgumentException("Wrong length! ");
+        }
+
 
         super.processValidation(request);
     }

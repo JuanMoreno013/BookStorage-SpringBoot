@@ -1,22 +1,17 @@
 package org.example.BookSpring.bookStorage.Validator;
 
-import org.example.BookSpring.bookStorage.ItemOp;
-import org.example.BookSpring.bookStorage.Magazines.Magazine;
+public class NotBlank extends Validator{
 
-import java.awt.print.Book;
-
-public class NotBlank<T> extends Validator<T>{
-
-    protected NotBlank(Validator<T> nextValidation) {
-
+    protected NotBlank(Validator nextValidation) {
         super(nextValidation);
     }
 
     @Override
-    public void processValidation(T request) {
-
-        if ((request.toString()).isBlank())
-            throw new IllegalArgumentException(" Something is Blank! ");
+    public void processValidation(Object request) {
+        if(request instanceof String){
+            if ((request.toString()).isBlank())
+                throw new IllegalArgumentException(" Something is BLANK ! ");
+        }
 
         super.processValidation(request);
 
