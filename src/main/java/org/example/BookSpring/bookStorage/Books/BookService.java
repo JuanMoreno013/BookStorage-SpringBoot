@@ -1,9 +1,7 @@
 package org.example.BookSpring.bookStorage.Books;
 
 import org.example.BookSpring.bookStorage.ItemOp;
-import org.example.BookSpring.bookStorage.Letters.Letter;
-import org.example.BookSpring.bookStorage.Notification.Observer;
-import org.example.BookSpring.bookStorage.Notification.SendMessage;
+import org.example.BookSpring.bookStorage.Notification.NotificationCenter;
 import org.example.BookSpring.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,14 +12,19 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class BookService<T> extends SendMessage<T>{
+public class BookService<T> {
     private final Repository<ItemOp> repository;
+
+    private final NotificationCenter notificationCenter;
+
+//    private final NotificationCenter notificationCenter= new NotificationCenter();
     //    SendMessage bookMessage = new SendMessage();
 
     @Autowired
-        public BookService(Repository<ItemOp> repository, Observer<T> observer) {
-        addObserver(observer);
+        public BookService(Repository<ItemOp> repository, NotificationCenter notificationCenter) {
+//        addObserver(observer);
         this.repository = repository;
+        this.notificationCenter = notificationCenter;
     }
 
     public List<Book> getAll() {
@@ -40,8 +43,10 @@ public class BookService<T> extends SendMessage<T>{
     public Boolean add(ItemOp objItem){
         Objects.requireNonNull(objItem);
 
-        setMessage("New Book Added");
-        notifyAllObservers();
+        notificationCenter.sendNotification("book", "New Book Added !");
+
+//        setMessage("New Book Added");
+//        notifyAllObservers();
 
         repository.add(objItem.getId(),objItem);
         return true;
@@ -57,8 +62,8 @@ public class BookService<T> extends SendMessage<T>{
 
         if (CheckBook) {
             repository.remove(bookId);
-            setMessage("Book Removed! ");
-            notifyAllObservers();
+//            setMessage("Book Removed! ");
+//            notifyAllObservers();
             return true;
         }
 

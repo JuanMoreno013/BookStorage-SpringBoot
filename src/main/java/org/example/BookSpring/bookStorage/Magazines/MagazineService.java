@@ -2,8 +2,7 @@ package org.example.BookSpring.bookStorage.Magazines;
 
 
 import org.example.BookSpring.bookStorage.ItemOp;
-import org.example.BookSpring.bookStorage.Notification.Observer;
-import org.example.BookSpring.bookStorage.Notification.SendMessage;
+import org.example.BookSpring.bookStorage.Notification.NotificationCenter;
 import org.example.BookSpring.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,13 +14,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class MagazineService<T> extends SendMessage<T> {
+public class MagazineService<T> {
     private final Repository<ItemOp> repository;
+    private final NotificationCenter notificationCenter;
 
     @Autowired
-    public MagazineService(Repository<ItemOp> repository, Observer<T> observer) {
-        addObserver(observer);
+    public MagazineService(Repository<ItemOp> repository, NotificationCenter notificationCenter) {
+//        addObserver(observer);
         this.repository = repository;
+        this.notificationCenter = notificationCenter;
     }
 
     public List<Magazine> getAll() {
@@ -41,8 +42,10 @@ public class MagazineService<T> extends SendMessage<T> {
     public Boolean add(ItemOp objItem){
         Objects.requireNonNull(objItem);
 
-        setMessage("New Magazine Added");
-        notifyAllObservers();
+        notificationCenter.sendNotification("magazine", "New Magazine Added !");
+
+//        setMessage("New Magazine Added");
+//        notifyAllObservers();
 
         repository.add(objItem.getId(),objItem);
         return true;
@@ -58,8 +61,8 @@ public class MagazineService<T> extends SendMessage<T> {
 
         if (CheckMagazine) {
             repository.remove(magazineId);
-            setMessage("Magazine Removed! ");
-            notifyAllObservers();
+//            setMessage("Magazine Removed! ");
+//            notifyAllObservers();
             return true;
         }
 

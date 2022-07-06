@@ -2,8 +2,7 @@ package org.example.BookSpring.bookStorage.Letters;
 
 
 import org.example.BookSpring.bookStorage.ItemOp;
-import org.example.BookSpring.bookStorage.Notification.Observer;
-import org.example.BookSpring.bookStorage.Notification.SendMessage;
+import org.example.BookSpring.bookStorage.Notification.NotificationCenter;
 import org.example.BookSpring.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,15 +14,18 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class LetterService<T> extends SendMessage<T> {
+public class LetterService<T>  {
     private final Repository<ItemOp> repository;
-    private final Observer<T> observer2;
+//    private final Observer<T> observer2;
+
+    private final NotificationCenter notificationCenter;
 
     @Autowired
-    public LetterService(Repository<ItemOp> repository, Observer<T> observer) {
-        this.observer2 = observer;
-        addObserver(this.observer2);
+    public LetterService(Repository<ItemOp> repository, NotificationCenter notificationCenter) {
+//        this.observer2 = observer;
+//        addObserver(this.observer2);
         this.repository = repository;
+        this.notificationCenter = notificationCenter;
     }
 
     public List<ItemOp> getAll() {
@@ -40,8 +42,7 @@ public class LetterService<T> extends SendMessage<T> {
     public Boolean add(ItemOp objItem){
         Objects.requireNonNull(objItem);
 
-        setMessage("New Letter Added! ");
-        notifyAllObservers();
+        notificationCenter.sendNotification("letter", "New Letter Added !");
 
         repository.add(objItem.getId(),objItem);
         return true;
@@ -57,8 +58,8 @@ public class LetterService<T> extends SendMessage<T> {
 
         if (CheckLetter) {
             repository.remove(letterId);
-            setMessage("Letter Removed! ");
-            notifyAllObservers();
+//            setMessage("Letter Removed! ");
+//            notifyAllObservers();
             return true;
         }
 
