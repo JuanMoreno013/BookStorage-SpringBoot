@@ -3,10 +3,7 @@ package org.example.BookSpring.bookStorage.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 //EventManager
 @Component
@@ -23,22 +20,28 @@ public class ManageSubscriber implements PublisherI{
     }
 
     public void subscribe(String eventType, Observer newSub){
-        List<Observer> user = eventSub.get(eventType);
-        user.add(newSub);
+
+        Optional.ofNullable(eventSub.get(eventType))
+                .ifPresent( subs -> subs.add(newSub));
+
+//        List<Observer> user = eventSub.get(eventType);
+//        user.add(newSub);
     }
 
     public void unsubscribe (String eventType, Observer oldSub){
-        List<Observer> user = eventSub.get(eventType);
-        user.add(oldSub);
+
+
+        Optional.ofNullable(eventSub.get(eventType))
+                .ifPresent( subs -> subs.remove(oldSub));
+
+//        List<Observer> user = eventSub.get(eventType);
+//        user.remove(oldSub);
     }
 
     public void notifySubscriber(String eventType, String message){
-        List<Observer> user = eventSub.get(eventType);
 
-        for (Observer observers : user){
-            observers.update(message);
-        }
-
+        Optional.ofNullable(eventSub.get(eventType))
+                .ifPresent(subs -> subs. forEach(sub-> sub.update(message)));
     }
 
 }
