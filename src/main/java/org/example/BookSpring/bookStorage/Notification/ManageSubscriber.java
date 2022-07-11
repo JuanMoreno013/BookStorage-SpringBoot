@@ -12,9 +12,9 @@ public class ManageSubscriber implements PublisherI {
 
         Optional.ofNullable(eventSub.get(eventType))
                 .ifPresentOrElse(subs -> subs.add(newSub), () -> {
-                    List<Observer> listEvents = new ArrayList<>();
-                    listEvents.add(newSub);
-                    eventSub.put(eventType, listEvents);
+                    List<Observer> listSubsForEvents = new ArrayList<>();
+                    listSubsForEvents.add(newSub);
+                    eventSub.put(eventType, listSubsForEvents);
                 });
     }
 
