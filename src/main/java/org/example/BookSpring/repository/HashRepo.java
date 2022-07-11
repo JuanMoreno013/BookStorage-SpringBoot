@@ -1,11 +1,14 @@
 package org.example.BookSpring.repository;
 
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-@Component
+@Component("hash")
+//@Primary
 public class HashRepo<E> implements Repository<E> {
     private final Map<Integer, E> mapRepo = new HashMap<>();
 
@@ -32,7 +35,6 @@ public class HashRepo<E> implements Repository<E> {
 
     @Override
     public Optional<E> update(int id, E item) {
-
         return Optional.ofNullable(mapRepo.compute(id, (nId, nItem) -> item));
     }
 
