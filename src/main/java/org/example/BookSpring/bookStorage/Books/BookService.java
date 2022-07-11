@@ -4,6 +4,7 @@ import org.example.BookSpring.bookStorage.ItemOp;
 import org.example.BookSpring.bookStorage.Notification.NotificationCenter;
 import org.example.BookSpring.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class BookService<T> {
     private final NotificationCenter notificationCenter;
 
     @Autowired
-    public BookService(Repository<ItemOp> repository, NotificationCenter notificationCenter) {
+    public BookService(@Qualifier(value = "tree") Repository<ItemOp> repository, NotificationCenter notificationCenter) {
         this.repository = repository;
         this.notificationCenter = notificationCenter;
     }

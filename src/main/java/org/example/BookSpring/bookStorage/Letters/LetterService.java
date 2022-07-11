@@ -5,6 +5,7 @@ import org.example.BookSpring.bookStorage.ItemOp;
 import org.example.BookSpring.bookStorage.Notification.NotificationCenter;
 import org.example.BookSpring.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 
@@ -19,7 +20,7 @@ public class LetterService {
     private final NotificationCenter notificationCenter;
 
     @Autowired
-    public LetterService(Repository<ItemOp> repository, NotificationCenter notificationCenter) {
+    public LetterService(@Qualifier("hash") Repository<ItemOp> repository, NotificationCenter notificationCenter) {
         this.repository = repository;
         this.notificationCenter = notificationCenter;
     }
