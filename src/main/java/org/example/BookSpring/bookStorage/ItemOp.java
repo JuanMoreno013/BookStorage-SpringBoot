@@ -11,16 +11,16 @@ import java.time.LocalDate;
 @Setter
 public abstract class ItemOp {
 
-    private int id ;
-    private  String title;
-    private  String author;
-    private  int pages;
-    private  LocalDate dateWrite;
+    private int id;
+    private String title;
+    private String author;
+    private int pages;
+    private LocalDate dateWrite;
 
-    private static  ChainValidator validateChain = new ChainValidator();
+    private static ChainValidator validateChain = new ChainValidator();
     private static int nextId = 1;
 
-    public ItemOp(String title, String author , int pages, LocalDate dateWrite){
+    public ItemOp(String title, String author, int pages, LocalDate dateWrite) {
 
         this.id = nextId++;
         this.title = validateChain.processValidator(title);
@@ -29,12 +29,13 @@ public abstract class ItemOp {
         this.dateWrite = validateChain.processValidator(dateWrite);
 
     }
+
     public String toString() {
         return
                 "\n Id: " + getId() +
-                "\n Title: " + getTitle() +
-                "\n Author: " + getAuthor() +
-                "\n Pages: " + getPages() +
-                "\n Date: " + getDateWrite() ;
+                        "\n Title: " + getTitle() +
+                        "\n Author: " + getAuthor() +
+                        "\n Pages: " + getPages() +
+                        "\n Date: " + getDateWrite();
     }
 }

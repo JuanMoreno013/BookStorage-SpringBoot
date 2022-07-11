@@ -5,10 +5,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-
 @Component
-public class HashRepo<E> implements Repository<E>{
-    private final Map< Integer, E> mapRepo = new HashMap<>();
+public class HashRepo<E> implements Repository<E> {
+    private final Map<Integer, E> mapRepo = new HashMap<>();
 
 
     @Override
@@ -22,7 +21,7 @@ public class HashRepo<E> implements Repository<E>{
     }
 
     @Override
-    public void add( int id, E item) {
+    public void add(int id, E item) {
         mapRepo.put(id, item);
     }
 
@@ -34,7 +33,7 @@ public class HashRepo<E> implements Repository<E>{
     @Override
     public Optional<E> update(int id, E item) {
 
-        return Optional.ofNullable(mapRepo.compute(id, (nId,nItem) -> item));
+        return Optional.ofNullable(mapRepo.compute(id, (nId, nItem) -> item));
     }
 
     @Override

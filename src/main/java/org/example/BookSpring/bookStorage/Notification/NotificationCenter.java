@@ -12,7 +12,7 @@ public class NotificationCenter {
         this.event = manageSubscriber;
     }
 
-    public void sendNotification(String eventType,String message){
+    public void sendNotification(String eventType, String message) {
         event.notifySubscriber(eventType, message);
     }
 }

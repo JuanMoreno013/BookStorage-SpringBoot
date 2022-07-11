@@ -20,12 +20,11 @@ public class Letter extends ItemOp {
 
         this.subject = validateChain.processValidator(subject);
         this.place = validateChain.processValidator(place);
-
     }
 
     public String toString() {
         return
-                super.toString()+
+                super.toString() +
                         "\n Subject: " + getSubject() +
                         "\n Place: " + getPlace();
     }
