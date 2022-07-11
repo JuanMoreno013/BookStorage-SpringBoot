@@ -1,12 +1,10 @@
 package org.example.BookSpring.bookStorage.Magazines;
 
-
 import org.example.BookSpring.bookStorage.ItemOp;
 import org.example.BookSpring.bookStorage.Notification.NotificationCenter;
 import org.example.BookSpring.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 import java.util.Objects;
@@ -20,7 +18,6 @@ public class MagazineService<T> {
 
     @Autowired
     public MagazineService(Repository<ItemOp> repository, NotificationCenter notificationCenter) {
-//        addObserver(observer);
         this.repository = repository;
         this.notificationCenter = notificationCenter;
     }
@@ -29,7 +26,7 @@ public class MagazineService<T> {
 
         return repository.getAll().
                 stream()
-                .filter(e-> e instanceof Magazine)
+                .filter(e -> e instanceof Magazine)
                 .map(item -> (Magazine) item)
                 .collect(Collectors.toList());
     }
@@ -39,20 +36,16 @@ public class MagazineService<T> {
                 .map(item -> (Magazine) item);
     }
 
-    public Boolean add(ItemOp objItem){
+    public Boolean add(ItemOp objItem) {
         Objects.requireNonNull(objItem);
 
         notificationCenter.sendNotification("magazine", "New Magazine Added !");
-
-//        setMessage("New Magazine Added");
-//        notifyAllObservers();
-
-        repository.add(objItem.getId(),objItem);
+        repository.add(objItem.getId(), objItem);
         return true;
     }
 
-    public Boolean delete(int magazineId){
-        if(magazineId<0)
+    public Boolean delete(int magazineId) {
+        if (magazineId < 0)
             throw new IllegalArgumentException();
 
         boolean CheckMagazine = repository.get(magazineId)
@@ -61,15 +54,13 @@ public class MagazineService<T> {
 
         if (CheckMagazine) {
             repository.remove(magazineId);
-//            setMessage("Magazine Removed! ");
-//            notifyAllObservers();
+            notificationCenter.sendNotification("magazine", " Magazine Removed !");
             return true;
         }
-
         return false;
     }
 
-    public Optional<Magazine> update(int magazineId, ItemOp magazineItem){
+    public Optional<Magazine> update(int magazineId, ItemOp magazineItem) {
 
         boolean CheckMagazine = repository.get(magazineId)
                 .filter(item -> item instanceof Magazine)

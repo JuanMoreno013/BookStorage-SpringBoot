@@ -14,25 +14,20 @@ import java.util.stream.Collectors;
 @Service
 public class BookService<T> {
     private final Repository<ItemOp> repository;
-
     private final NotificationCenter notificationCenter;
 
-//    private final NotificationCenter notificationCenter= new NotificationCenter();
-    //    SendMessage bookMessage = new SendMessage();
-
     @Autowired
-        public BookService(Repository<ItemOp> repository, NotificationCenter notificationCenter) {
-//        addObserver(observer);
+    public BookService(Repository<ItemOp> repository, NotificationCenter notificationCenter) {
         this.repository = repository;
         this.notificationCenter = notificationCenter;
     }
 
     public List<Book> getAll() {
         return repository.getAll().
-                     stream()
-                     .filter(e-> e instanceof Book)
-                     .map(item -> (Book) item)
-                     .collect(Collectors.toList());
+                stream()
+                .filter(e -> e instanceof Book)
+                .map(item -> (Book) item)
+                .collect(Collectors.toList());
     }
 
     public Optional<Book> get(int bookId) {
@@ -40,20 +35,16 @@ public class BookService<T> {
                 .map(item -> (Book) item);
     }
 
-    public Boolean add(ItemOp objItem){
+    public Boolean add(ItemOp objItem) {
         Objects.requireNonNull(objItem);
 
         notificationCenter.sendNotification("book", "New Book Added !");
-
-//        setMessage("New Book Added");
-//        notifyAllObservers();
-
-        repository.add(objItem.getId(),objItem);
+        repository.add(objItem.getId(), objItem);
         return true;
     }
 
-    public Boolean delete(int bookId){
-        if(bookId<0)
+    public Boolean delete(int bookId) {
+        if (bookId < 0)
             throw new IllegalArgumentException();
 
         boolean CheckBook = repository.get(bookId)
@@ -62,15 +53,13 @@ public class BookService<T> {
 
         if (CheckBook) {
             repository.remove(bookId);
-//            setMessage("Book Removed! ");
-//            notifyAllObservers();
+            notificationCenter.sendNotification("book", "Book Removed !");
             return true;
         }
-
         return false;
     }
 
-    public Optional<Book> update(int bookId, ItemOp bookItem){
+    public Optional<Book> update(int bookId, ItemOp bookItem) {
 
         boolean CheckBook = repository.get(bookId)
                 .filter(item -> item instanceof Book)
@@ -82,7 +71,6 @@ public class BookService<T> {
         bookItem.setId(bookId);
         return repository.update(bookId, bookItem)
                 .map(e -> (Book) e);
-
     }
 
 }

@@ -14,16 +14,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class LetterService<T>  {
+public class LetterService {
     private final Repository<ItemOp> repository;
-//    private final Observer<T> observer2;
-
     private final NotificationCenter notificationCenter;
 
     @Autowired
     public LetterService(Repository<ItemOp> repository, NotificationCenter notificationCenter) {
-//        this.observer2 = observer;
-//        addObserver(this.observer2);
         this.repository = repository;
         this.notificationCenter = notificationCenter;
     }
@@ -31,7 +27,7 @@ public class LetterService<T>  {
     public List<ItemOp> getAll() {
         return repository.getAll()
                 .stream()
-                .filter(e-> e instanceof Letter)
+                .filter(e -> e instanceof Letter)
                 .collect(Collectors.toList());
     }
 
@@ -39,17 +35,17 @@ public class LetterService<T>  {
         return repository.get(letterId);
     }
 
-    public Boolean add(ItemOp objItem){
+    public Boolean add(ItemOp objItem) {
         Objects.requireNonNull(objItem);
 
         notificationCenter.sendNotification("letter", "New Letter Added !");
 
-        repository.add(objItem.getId(),objItem);
+        repository.add(objItem.getId(), objItem);
         return true;
     }
 
-    public Boolean delete(int letterId){
-        if(letterId<0)
+    public Boolean delete(int letterId) {
+        if (letterId < 0)
             throw new IllegalArgumentException();
 
         boolean CheckLetter = repository.get(letterId)
@@ -58,15 +54,13 @@ public class LetterService<T>  {
 
         if (CheckLetter) {
             repository.remove(letterId);
-//            setMessage("Letter Removed! ");
-//            notifyAllObservers();
+            notificationCenter.sendNotification("letter", "Letter Removed !");
             return true;
         }
-
         return false;
     }
 
-    public Optional<ItemOp> update(int letterId, ItemOp letterItem){
+    public Optional<ItemOp> update(int letterId, ItemOp letterItem) {
 
         boolean CheckLetter = repository.get(letterId)
                 .filter(item -> item instanceof Letter)
