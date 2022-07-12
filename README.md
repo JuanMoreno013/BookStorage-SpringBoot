@@ -1,7 +1,6 @@
 Book Storage
 ===
 ***
- 
 
 ### Purpose
 
@@ -9,33 +8,38 @@ The purpose to develop Book Storage ....
 
 ### Method Definitions
 
-The set of common methods for HTTP/1.1 is defined below. 
-Although this set can be expanded, additional methods cannot be assumed to share the same 
+The set of common methods for HTTP/1.1 is defined below.
+Although this set can be expanded, additional methods cannot be assumed to share the same
 semantics for separately extended clients and servers.
 
 **_GET_** <br>
 The GET method means retrieve whatever information (in the form of an entity) is identified by the Request-URI.
-&nbsp;If the Request-URI refers to a data-producing process, it is the produced data which shall be returned as the entity
+&nbsp;If the Request-URI refers to a data-producing process, it is the produced data which shall be returned as the
+entity
 &nbsp;in the response and not the source text of the process, unless that text happens to be the output of the process.
 
-
 **_POST_**<br>
-The POST method is used to request that the destination server accept the entity 
+The POST method is used to request that the destination server accept the entity
 enclosed in the request as a new subordinate of the resource identified by the Request-URI in the Request-Line.
 
 **_PUT_** <br>
-The PUT method requests that the enclosed entity be stored under the supplied Request-URI. If the Request-URI refers 
-to an already existing resource, the enclosed entity should be considered as a modified version of the one residing 
-on the origin server. If the Request-URI does not point to an existing resource, and that URI is capable of being 
+The PUT method requests that the enclosed entity be stored under the supplied Request-URI. If the Request-URI refers
+to an already existing resource, the enclosed entity should be considered as a modified version of the one residing
+on the origin server. If the Request-URI does not point to an existing resource, and that URI is capable of being
 defined as a new resource by the requesting user agent, the origin server can create the resource with that URI.
 
 **_DELETE_** <br>
 The DELETE method requests that the origin server delete the resource identified by the Request-URI.
+
+
 ---
+
 ### BOOKS
+
 ### Requests
 
 ---
+
 ##### -GET
 
 Show all the books that already exist on storage
@@ -46,6 +50,7 @@ URI: `/books`
 [//]: # (**Parameter Content type:**)
 
 ##### **Responses:**
+
 <REQUEST>
 Code
 <CODE> 200 </CODE>
@@ -64,7 +69,6 @@ Code
 </REQUEST>
 
 #### Example of response
-
 
 `  {` <br>
 `"id": " 1",` <br>
@@ -88,22 +92,23 @@ Code
 `"status": "New",` <br>
 `"editorial": "Princeton"`<br>
 `}`
- 
+
 
 ---
+
 ##### -GET
 
 Return a single book using the ID
 
-URI: `/books/{bookId}` 
+URI: `/books/{bookId}`
 
 **Parameter Content type:**
 ` bookid` <br>
 type: Integer <br>
 Description: ID of book to return
 
-
 ##### **Responses:**
+
 <REQUEST>
 Code
 <CODE> 200 </CODE>
@@ -142,10 +147,9 @@ URI: `/books/2`
 
 ##### -POST
 
-Add new book to the storage 
+Add new book to the storage
 
 URI: `/books`
-
 
 **Parameter Content type:**
 <br>
@@ -164,8 +168,8 @@ URI: `/books`
 `"editorial": "Princeton"`<br>
 `}`
 
-
 ##### **Responses:**
+
 <REQUEST>
 Code
 <CODE> 200 </CODE>
@@ -187,6 +191,7 @@ Code
 `false` If the book has some error in their fields.
 
 ---
+
 ##### -DELETE
 
 Remove a book using the ID
@@ -199,6 +204,7 @@ type: Integer <br>
 Description: ID of book to delete
 
 ##### **Responses:**
+
 <REQUEST>
 Code
 <CODE> 200 </CODE>
@@ -260,8 +266,8 @@ URI: `/books/{bookId}`
 `"editorial": "Princeton"`<br>
 `}`
 
-
 ##### **Responses:**
+
 <REQUEST>
 Code
 <CODE> 200 </CODE>
@@ -306,6 +312,7 @@ URI: `/books/10`
 ---
 
 ### MAGAZINE
+
 ### Requests
 
 ---
@@ -317,6 +324,7 @@ Show all the magazines that already exist on storage
 URI: `/magazines`
 
 ##### **Responses:**
+
 <REQUEST>
 Code
 <CODE> 200 </CODE>
@@ -344,6 +352,7 @@ URI: `/magazines`
 `"volume": 4,` <br>
 `"editorial": "For now"`<br>
 `}` <br>
+
 `{` <br>
 `"id": " 5",` <br>
 `"title": "Look Chest",` <br>
@@ -354,6 +363,8 @@ URI: `/magazines`
 `"volume": 5,` <br>
 `"editorial": "4Young"`<br>
 `}` <br>
+
+
 ---
 
 ##### -GET
@@ -367,8 +378,8 @@ URI: `/magazines/{magazineID}`
 Type: Integer <br>
 Description: ID of magazine to return
 
-
 ##### **Responses:**
+
 <REQUEST>
 Code
 <CODE> 200 </CODE>
@@ -426,8 +437,8 @@ URI: `/magazines`
 `"editorial": "4Young"`<br>
 `}` <br>
 
-
 ##### **Responses:**
+
 <REQUEST>
 Code
 <CODE> 200 </CODE>
@@ -462,6 +473,7 @@ type: Integer <br>
 Description: ID of magazine to delete
 
 ##### **Responses:**
+
 <REQUEST>
 Code
 <CODE> 200 </CODE>
@@ -495,7 +507,6 @@ URI: `/magazine/4`
 
 ---
 
-
 ##### -PUT
 
 Modify elements to one specific magazine using their ID
@@ -523,8 +534,8 @@ URI: `/magazines/{magazineID}`
 `"editorial": "4Young"`<br>
 `}` <br>
 
-
 ##### **Responses:**
+
 <REQUEST>
 Code <CODE> 200 </CODE>
 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -563,6 +574,7 @@ URI: `/magazine/5`
 ---
 
 ### LETTER
+
 ### Requests
 
 ---
@@ -574,6 +586,7 @@ Show all the letter that already exists on storage
 URI: `/letters`
 
 ##### **Responses:**
+
 <REQUEST>
 Code
 <CODE> 200 </CODE>
@@ -609,6 +622,8 @@ URI: `/letters`
 `"subject": "Important",` <br>
 `"place": Malaga` <br>
 `}` <br>
+
+
 ---
 
 ##### -GET
@@ -622,8 +637,8 @@ URI: `/letters/{letterID}`
 Type: Integer <br>
 Description: ID of letter to return
 
-
 ##### **Responses:**
+
 <REQUEST>
 Code
 <CODE> 200 </CODE>
@@ -655,7 +670,10 @@ URI: `/letters/3`
 `"subject": "Pop",` <br>
 `"place": Prince` <br>
 `}` <br>
+
+
 ---
+
 ##### -POST
 
 Add new letter to the storage
@@ -677,8 +695,8 @@ URI: `/letters`
 `"place": Spain` <br>
 `}` <br>
 
-
 ##### **Responses:**
+
 <REQUEST>
 Code <CODE> 200 </CODE>
 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -697,7 +715,6 @@ Code <CODE> 200 </CODE>
 
 ---
 
-
 ##### -DELETE
 
 Remove a magazine using the ID
@@ -710,6 +727,7 @@ type: Integer <br>
 Description: ID of letter to delete
 
 ##### **Responses:**
+
 <REQUEST>
 Code <CODE> 200 </CODE>
 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -765,8 +783,8 @@ URI: `/letters/{letterID}`
 `"place": Spain` <br>
 `}` <br>
 
-
 ##### **Responses:**
+
 <REQUEST>
 Code <CODE> 200 </CODE>
 &nbsp;&nbsp;&nbsp;&nbsp;
