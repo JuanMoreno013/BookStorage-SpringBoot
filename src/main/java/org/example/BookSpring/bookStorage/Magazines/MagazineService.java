@@ -1,5 +1,7 @@
 package org.example.BookSpring.bookStorage.Magazines;
 
+import org.example.BookSpring.bookStorage.Vexceptions.ItemBadRequestException;
+import org.example.BookSpring.bookStorage.Vexceptions.ItemNotFoundException;
 import org.example.BookSpring.bookStorage.ItemOp;
 import org.example.BookSpring.bookStorage.Notification.NotificationCenter;
 import org.example.BookSpring.repository.Repository;
@@ -33,8 +35,9 @@ public class MagazineService<T> {
     }
 
     public Optional<Magazine> get(int magazineId) {
-        return repository.get(magazineId)
-                .map(item -> (Magazine) item);
+        return Optional.ofNullable(repository.get(magazineId)
+                .map(item -> (Magazine) item)
+                .orElseThrow(() -> new ItemNotFoundException("NOT found magazine with ID : " + magazineId)));
     }
 
     public Boolean add(ItemOp objItem) {
@@ -47,7 +50,7 @@ public class MagazineService<T> {
 
     public Boolean delete(int magazineId) {
         if (magazineId < 0)
-            throw new IllegalArgumentException();
+            throw new ItemBadRequestException(" Wrong ID number! ");
 
         boolean CheckMagazine = repository.get(magazineId)
                 .filter(item -> item instanceof Magazine)
@@ -58,7 +61,7 @@ public class MagazineService<T> {
             notificationCenter.sendNotification("magazine", " Magazine Removed !");
             return true;
         }
-        return false;
+        throw new ItemNotFoundException(" NOT found magazine with ID " + magazineId + " to be removed !");
     }
 
     public Optional<Magazine> update(int magazineId, ItemOp magazineItem) {
@@ -68,10 +71,11 @@ public class MagazineService<T> {
                 .isPresent();
 
         if (!CheckMagazine) {
-            return Optional.empty();
-        }
-        magazineItem.setId(magazineId);
+            throw new ItemNotFoundException(" NOT found magazine with ID " + magazineId + " to be updated !");
 
+        }
+
+        magazineItem.setId(magazineId);
         return repository.update(magazineId, magazineItem)
                 .map(item -> (Magazine) item);
     }

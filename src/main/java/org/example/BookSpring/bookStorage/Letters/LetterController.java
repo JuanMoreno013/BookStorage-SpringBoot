@@ -1,6 +1,5 @@
 package org.example.BookSpring.bookStorage.Letters;
 
-import org.example.BookSpring.bookStorage.ItemNotFoundException;
 import org.example.BookSpring.bookStorage.ItemOp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +22,7 @@ public class LetterController {
 
     @GetMapping("/letters/{letterId}")
     public ItemOp getMLetter(@PathVariable Integer letterId) {
-        return letterService.get(letterId)
-                .map(item -> (Letter) item)
-                .orElseThrow(() -> new ItemNotFoundException(letterId));
+        return letterService.get(letterId).orElse(null);
     }
 
     @PostMapping("/letters")
@@ -50,7 +47,7 @@ public class LetterController {
 
                     return (Letter) letter;
                 })
-                .orElseThrow(() -> new IllegalArgumentException(""));
+                .orElse(null);
     }
 }
 

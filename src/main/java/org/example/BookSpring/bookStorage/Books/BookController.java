@@ -1,6 +1,5 @@
 package org.example.BookSpring.bookStorage.Books;
 
-import org.example.BookSpring.bookStorage.ItemNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +23,8 @@ public class BookController {
     @GetMapping("/books/{bookId}")
     public Book getBook(@PathVariable Integer bookId) {
         return bookService.get(bookId)
-                .orElseThrow(() -> new ItemNotFoundException(bookId));
+                .orElse(null);
+
     }
 
     @PostMapping("/books")
@@ -48,8 +48,8 @@ public class BookController {
                     book.setPages(nbook.getPages());
 
                     return book;
-                })
-                .orElseThrow(() -> new IllegalArgumentException(""));
+                }).orElse(null);
+
     }
 
 }

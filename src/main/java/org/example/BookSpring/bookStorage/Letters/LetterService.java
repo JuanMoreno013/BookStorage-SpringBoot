@@ -1,6 +1,8 @@
 package org.example.BookSpring.bookStorage.Letters;
 
 
+import org.example.BookSpring.bookStorage.Vexceptions.ItemBadRequestException;
+import org.example.BookSpring.bookStorage.Vexceptions.ItemNotFoundException;
 import org.example.BookSpring.bookStorage.ItemOp;
 import org.example.BookSpring.bookStorage.Notification.NotificationCenter;
 import org.example.BookSpring.repository.Repository;
@@ -33,7 +35,9 @@ public class LetterService {
     }
 
     public Optional<ItemOp> get(int letterId) {
-        return repository.get(letterId);
+        return Optional.ofNullable(repository.get(letterId)
+                .map(item -> (Letter) item)
+                .orElseThrow(() -> new ItemNotFoundException("NOT found letter with ID : " + letterId)));
     }
 
     public Boolean add(ItemOp objItem) {
@@ -46,8 +50,8 @@ public class LetterService {
     }
 
     public Boolean delete(int letterId) {
-        if (letterId < 0)
-            throw new IllegalArgumentException();
+        if (letterId < 1)
+            throw new ItemBadRequestException(" Wrong ID number! ");
 
         boolean CheckLetter = repository.get(letterId)
                 .filter(item -> item instanceof Letter)
@@ -58,7 +62,9 @@ public class LetterService {
             notificationCenter.sendNotification("letter", "Letter Removed !");
             return true;
         }
-        return false;
+
+        throw new ItemNotFoundException(" NOT found letter with ID " + letterId + " to be removed !");
+
     }
 
     public Optional<ItemOp> update(int letterId, ItemOp letterItem) {
@@ -68,7 +74,7 @@ public class LetterService {
                 .isPresent();
 
         if (!CheckLetter) {
-            return Optional.empty();
+            throw new ItemNotFoundException(" NOT found book with ID " + letterId + " to be updated !");
         }
 
         letterItem.setId(letterId);
