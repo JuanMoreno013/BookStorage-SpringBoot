@@ -1,46 +1,45 @@
 package org.example.BookSpring.repository;
 
-
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-@Component("hash")
+@Component("tree")
 //@Primary
-public class HashRepo<E> implements Repository<E> {
-    private final Map<Integer, E> mapRepo = new HashMap<>();
-
+public class TreeRepo<E> implements Repository<E> {
+    private final Map<Integer, E> mapTreeRepo = new TreeMap<>();
 
     @Override
     public Optional<E> get(int id) {
-        return Optional.ofNullable(mapRepo.get(id));
+        return Optional.ofNullable(mapTreeRepo.get(id));
     }
 
     @Override
     public List<E> getAll() {
-        return new ArrayList<>(mapRepo.values());
+        return new ArrayList<>(mapTreeRepo.values());
     }
 
     @Override
     public void add(int id, E item) {
-        mapRepo.put(id, item);
+        if (item == null)
+            throw new NullPointerException();
+        mapTreeRepo.put(id, item);
     }
 
     @Override
     public void remove(int id) {
-        mapRepo.remove(id);
+        mapTreeRepo.remove(id);
     }
 
     @Override
     public Optional<E> update(int id, E item) {
-        return Optional.ofNullable(mapRepo.compute(id, (nId, nItem) -> item));
+        return Optional.ofNullable(mapTreeRepo.compute(id, (nId, nItem) -> item));
     }
 
     @Override
     public void clear() {
-        mapRepo.clear();
+        mapTreeRepo.clear();
     }
 
 }

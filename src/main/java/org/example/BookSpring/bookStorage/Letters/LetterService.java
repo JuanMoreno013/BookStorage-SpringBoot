@@ -1,57 +1,57 @@
 package org.example.BookSpring.bookStorage.Letters;
 
-import org.example.BookSpring.bookStorage.Books.Book;
+
+import org.example.BookSpring.bookStorage.Vexceptions.ItemBadRequestException;
+import org.example.BookSpring.bookStorage.Vexceptions.ItemNotFoundException;
 import org.example.BookSpring.bookStorage.ItemOp;
-import org.example.BookSpring.bookStorage.Notification.Observer;
-import org.example.BookSpring.bookStorage.Notification.SendMessage;
-import org.example.BookSpring.repository.HashRepo;
+import org.example.BookSpring.bookStorage.Notification.NotificationCenter;
 import org.example.BookSpring.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class LetterService<T> extends SendMessage<T> {
+public class LetterService {
     private final Repository<ItemOp> repository;
-    private final Observer<T> observer2;
+    private final NotificationCenter notificationCenter;
 
     @Autowired
-    public LetterService(Repository<ItemOp> repository, Observer<T> observer) {
-        this.observer2 = observer;
-        addObserver(this.observer2);
+    public LetterService(@Qualifier("hash") Repository<ItemOp> repository, NotificationCenter notificationCenter) {
         this.repository = repository;
+        this.notificationCenter = notificationCenter;
     }
 
     public List<ItemOp> getAll() {
         return repository.getAll()
                 .stream()
-                .filter(e-> e instanceof Letter)
+                .filter(e -> e instanceof Letter)
                 .collect(Collectors.toList());
     }
 
     public Optional<ItemOp> get(int letterId) {
-        return repository.get(letterId);
+        return Optional.ofNullable(repository.get(letterId)
+                .map(item -> (Letter) item)
+                .orElseThrow(() -> new ItemNotFoundException("NOT found letter with ID : " + letterId)));
     }
 
-    public Boolean add(ItemOp objItem){
+    public Boolean add(ItemOp objItem) {
         Objects.requireNonNull(objItem);
 
-        setMessage("New Letter Added! ");
-        notifyAllObservers();
+        notificationCenter.sendNotification("letter", "New Letter Added !");
 
-        repository.add(objItem.getId(),objItem);
+        repository.add(objItem.getId(), objItem);
         return true;
     }
 
-    public Boolean delete(int letterId){
-        if(letterId<0)
-            throw new IllegalArgumentException();
+    public Boolean delete(int letterId) {
+        if (letterId < 1)
+            throw new ItemBadRequestException(" Wrong ID number! ");
 
         boolean CheckLetter = repository.get(letterId)
                 .filter(item -> item instanceof Letter)
@@ -59,22 +59,22 @@ public class LetterService<T> extends SendMessage<T> {
 
         if (CheckLetter) {
             repository.remove(letterId);
-            setMessage("Letter Removed! ");
-            notifyAllObservers();
+            notificationCenter.sendNotification("letter", "Letter Removed !");
             return true;
         }
 
-        return false;
+        throw new ItemNotFoundException(" NOT found letter with ID " + letterId + " to be removed !");
+
     }
 
-    public Optional<ItemOp> update(int letterId, ItemOp letterItem){
+    public Optional<ItemOp> update(int letterId, ItemOp letterItem) {
 
         boolean CheckLetter = repository.get(letterId)
                 .filter(item -> item instanceof Letter)
                 .isPresent();
 
         if (!CheckLetter) {
-            return Optional.empty();
+            throw new ItemNotFoundException(" NOT found book with ID " + letterId + " to be updated !");
         }
 
         letterItem.setId(letterId);
