@@ -16,18 +16,18 @@ public class LetterController {
     }
 
     @GetMapping("/letters")
-    public List<ItemOp> getAllLetter() {
+    public List<Letter> getAllLetter() {
         return letterService.getAll();
     }
 
     @GetMapping("/letters/{letterId}")
     public ItemOp getMLetter(@PathVariable Integer letterId) {
-        return letterService.get(letterId).orElse(null);
+        return letterService.get(letterId);
     }
 
     @PostMapping("/letters")
     public Boolean addLetter(@RequestBody Letter letter) {
-        return letterService.add(letter);
+        return letterService.save(letter);
     }
 
     @DeleteMapping("/letters/{letterId}")
@@ -36,18 +36,8 @@ public class LetterController {
     }
 
     @PutMapping("/letters/{letterId}")
-    public ItemOp updateLetter(@PathVariable Integer letterId, @RequestBody Letter nLetter) {
-        return letterService.update(letterId, nLetter)
-                .map(letter -> {
-                    letter.setId(letter.getId());
-                    letter.setTitle(nLetter.getTitle());
-                    letter.setAuthor(nLetter.getAuthor());
-                    letter.setDateWrite(nLetter.getDateWrite());
-                    letter.setPages(nLetter.getPages());
-
-                    return (Letter) letter;
-                })
-                .orElse(null);
+    public Boolean updateLetter(@PathVariable Integer letterId, @RequestBody Letter nLetter) {
+        return letterService.update(letterId, nLetter);
     }
 }
 
