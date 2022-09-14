@@ -7,10 +7,10 @@ import java.util.List;
 
 @RestController
 public class MagazineController {
-    private final MagazineService<Magazine> magazineService;
+    private final MagazineService magazineService;
 
     @Autowired
-    public MagazineController(MagazineService<Magazine> magazineService) {
+    public MagazineController(MagazineService magazineService) {
         this.magazineService = magazineService;
     }
 
@@ -21,12 +21,12 @@ public class MagazineController {
 
     @GetMapping("/magazines/{magazineId}")
     public Magazine getMagazine(@PathVariable Integer magazineId) {
-        return magazineService.get(magazineId).orElse(null);
+        return magazineService.get(magazineId);
     }
 
     @PostMapping("/magazines")
     public Boolean addMagazine(@RequestBody Magazine magazine) {
-        return magazineService.add(magazine);
+        return magazineService.save(magazine);
     }
 
     @DeleteMapping("/magazines/{magazineId}")
@@ -35,17 +35,7 @@ public class MagazineController {
     }
 
     @PutMapping("/magazines/{magazineId}")
-    public Magazine updateMagazine(@PathVariable Integer magazineId, @RequestBody Magazine nMaga) {
-        return magazineService.update(magazineId, nMaga)
-                .map(magazine -> {
-                    magazine.setId(nMaga.getId());
-                    magazine.setTitle(nMaga.getTitle());
-                    magazine.setAuthor(nMaga.getAuthor());
-                    magazine.setDateWrite(nMaga.getDateWrite());
-                    magazine.setPages(nMaga.getPages());
-
-                    return magazine;
-                })
-                .orElse(null);
+    public Boolean updateMagazine(@PathVariable Integer magazineId, @RequestBody Magazine magazine) {
+       return magazineService.update(magazineId, magazine);
     }
 }
