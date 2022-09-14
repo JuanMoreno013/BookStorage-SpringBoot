@@ -7,11 +7,14 @@ import org.example.BookSpring.bookStorage.Validator.ChainValidator;
 
 import java.time.LocalDate;
 
+
 @Getter
 @Setter
-public class Letter extends ItemOp {
+public final class Letter extends ItemOp {
     private final String subject;
     private final String place;
+
+    private  Integer userTaken;
 
     private static ChainValidator validateChain = new ChainValidator();
 

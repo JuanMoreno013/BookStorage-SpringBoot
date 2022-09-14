@@ -6,34 +6,29 @@ import org.example.BookSpring.bookStorage.Validator.ChainValidator;
 
 import java.time.LocalDate;
 
-
 @Getter
 @Setter
 public abstract class ItemOp {
 
     private int id;
-    private String title;
-    private String author;
-    private int pages;
-    private LocalDate dateWrite;
+    private final String title;
+    private final String author;
+    private final int pages;
+    private final LocalDate dateWrite;
 
     private static ChainValidator validateChain = new ChainValidator();
-    private static int nextId = 1;
 
     public ItemOp(String title, String author, int pages, LocalDate dateWrite) {
 
-        this.id = nextId++;
         this.title = validateChain.processValidator(title);
         this.author = validateChain.processValidator(author);
         this.pages = validateChain.processValidator(pages);
         this.dateWrite = validateChain.processValidator(dateWrite);
-
     }
 
     public String toString() {
         return
-                "\n Id: " + getId() +
-                        "\n Title: " + getTitle() +
+                "\n Title: " + getTitle() +
                         "\n Author: " + getAuthor() +
                         "\n Pages: " + getPages() +
                         "\n Date: " + getDateWrite();

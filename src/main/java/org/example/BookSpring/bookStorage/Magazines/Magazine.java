@@ -9,10 +9,13 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class Magazine extends ItemOp {
+public final class Magazine extends ItemOp {
     private final int volume;
     private final String subject;
     private final String editorial;
+
+    private  Integer userTaken;
+
     private static ChainValidator validateChain = new ChainValidator();
 
     public Magazine(String title, String author, int pages, LocalDate dateWrite, String subject, int volume, String editorial) {
