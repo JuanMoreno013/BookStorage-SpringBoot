@@ -8,10 +8,10 @@ import java.util.List;
 @RestController
 public class BookController {
 
-    private final BookService<Book> bookService;
+    private final BookService bookService;
 
     @Autowired
-    public BookController(BookService<Book> bookService) {
+    public BookController(BookService bookService) {
         this.bookService = bookService;
     }
 
@@ -22,14 +22,12 @@ public class BookController {
 
     @GetMapping("/books/{bookId}")
     public Book getBook(@PathVariable Integer bookId) {
-        return bookService.get(bookId)
-                .orElse(null);
-
+        return bookService.get(bookId);
     }
 
     @PostMapping("/books")
     public Boolean addBook(@RequestBody Book book) {
-        return bookService.add(book);
+        return bookService.save(book);
     }
 
     @DeleteMapping("/books/{bookId}")
@@ -38,18 +36,8 @@ public class BookController {
     }
 
     @PutMapping("/books/{bookId}")
-    public Book updateBook(@PathVariable Integer bookId, @RequestBody Book nbook) {
-        return bookService.update(bookId, nbook)
-                .map(book -> {
-                    book.setId(nbook.getId());
-                    book.setTitle(nbook.getTitle());
-                    book.setAuthor(nbook.getAuthor());
-                    book.setDateWrite(nbook.getDateWrite());
-                    book.setPages(nbook.getPages());
-
-                    return book;
-                }).orElse(null);
-
+    public Boolean updateBook(@PathVariable Integer bookId, @RequestBody Book book) {
+        return bookService.update(bookId, book);
     }
 
 }
