@@ -1,7 +1,7 @@
 
-DROP TABLE IF EXISTS public."User" CASCADE;
+DROP TABLE IF EXISTS Users CASCADE;
 
-CREATE TABLE IF NOT EXISTS public."User"
+CREATE TABLE IF NOT EXISTS Users
 (
     id_User serial NOT NULL,
     userName text NOT NULL,
@@ -12,9 +12,9 @@ CREATE TABLE IF NOT EXISTS public."User"
 );
 
 
-DROP TABLE IF EXISTS public."Book";
+DROP TABLE IF EXISTS Book;
 
-CREATE TABLE IF NOT EXISTS public."Book"
+CREATE TABLE IF NOT EXISTS Book
 (
     id_Book serial NOT NULL,
     title text NOT NULL,
@@ -33,14 +33,13 @@ CREATE TABLE IF NOT EXISTS public."Book"
     CONSTRAINT "pk_id_Book" PRIMARY KEY (id_Book),
 
     CONSTRAINT "fk_user_Book" FOREIGN KEY (userTaken)
-        REFERENCES "public"."User" (id_User) MATCH SIMPLE
-
+        REFERENCES Users (id_User) MATCH SIMPLE
 
 );
 
-DROP TABLE IF EXISTS public."Letter";
+DROP TABLE IF EXISTS Letter;
 
-CREATE TABLE IF NOT EXISTS public."Letter"
+CREATE TABLE IF NOT EXISTS Letter
 (
     id_Letter serial NOT NULL,
     title text NOT NULL,
@@ -57,13 +56,13 @@ CREATE TABLE IF NOT EXISTS public."Letter"
     CONSTRAINT "pk_id_Letter" PRIMARY KEY (id_Letter),
 
     CONSTRAINT "fk_user_Letter" FOREIGN KEY (userTaken)
-        REFERENCES "public"."User" (id_User) MATCH SIMPLE
+       REFERENCES Users (id_User) MATCH SIMPLE
 
 );
 
-DROP TABLE IF EXISTS public."Magazine";
+DROP TABLE IF EXISTS Magazine;
 
-CREATE TABLE IF NOT EXISTS public."Magazine"
+CREATE TABLE IF NOT EXISTS Magazine
 (
     id_Magazine serial NOT NULL,
     title text NOT NULL,
@@ -81,7 +80,7 @@ CREATE TABLE IF NOT EXISTS public."Magazine"
     CONSTRAINT "pk_id_Magazine" PRIMARY KEY (id_Magazine),
 
     CONSTRAINT "fk_user_Magazine" FOREIGN KEY (userTaken)
-        REFERENCES "public"."User" (id_User) MATCH SIMPLE
+        REFERENCES Users (id_User) MATCH SIMPLE
 
 );
 
