@@ -4,16 +4,16 @@ import org.example.BookSpring.bookStorage.models.Letter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class LetterRepository {
     @Autowired
-    private  JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     private static final RowMapper<Letter> mapRow = (rs, rowNum) -> {
         Letter magazine = new Letter(
@@ -41,12 +41,12 @@ public class LetterRepository {
         String sqlUpdateAll = "update Letter set title = ?, author= ?, pages= ?, dateLetter= ?, subject= ?, place= ?, userTaken= ? " +
                 " where id_Letter = ?  ";
 
-       return jdbcTemplate.update(
+        return jdbcTemplate.update(
                 sqlUpdateAll,
                 magazine.getTitle(),
                 magazine.getAuthor(),
                 magazine.getPages(),
-                magazine.getDateWrite(),
+                Date.valueOf(magazine.getDateWrite()),
                 magazine.getSubject(),
                 magazine.getPlace(),
                 magazine.getUserTaken(),
@@ -64,7 +64,7 @@ public class LetterRepository {
                 magazine.getTitle(),
                 magazine.getAuthor(),
                 magazine.getPages(),
-                magazine.getDateWrite(),
+                Date.valueOf(magazine.getDateWrite()),
                 magazine.getSubject(),
                 magazine.getPlace(),
                 magazine.getUserTaken());

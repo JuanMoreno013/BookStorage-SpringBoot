@@ -10,10 +10,10 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public final class Letter extends ItemOp {
-    private final String subject;
-    private final String place;
+    private String subject;
+    private String place;
 
-    private  Integer userTaken;
+    private Integer userTaken;
 
     private static ChainValidator validateChain = new ChainValidator();
 
