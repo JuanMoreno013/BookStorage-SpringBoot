@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +15,7 @@ import java.util.Optional;
 public class BookRepository {
 
     @Autowired
-    private  JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
 
     private static final RowMapper<Book> mapRow = (rs, rowNum) -> {
@@ -44,12 +46,12 @@ public class BookRepository {
         String sqlUpdateAll = "update Book set title = ?, author= ?, pages= ?, dateBook= ?, nsbn= ?, subject= ?, status= ?, editorial= ?,userTaken= ? " +
                 " where id_Book = ?  ";
 
-       return jdbcTemplate.update(
+        return jdbcTemplate.update(
                 sqlUpdateAll,
                 book.getTitle(),
                 book.getAuthor(),
                 book.getPages(),
-                book.getDateWrite(),
+                Date.valueOf(book.getDateWrite()),
                 book.getNsbn(),
                 book.getSubject(),
                 book.getStatus(),
@@ -70,7 +72,7 @@ public class BookRepository {
                 book.getTitle(),
                 book.getAuthor(),
                 book.getPages(),
-                book.getDateWrite(),
+                Date.valueOf(book.getDateWrite()),
                 book.getNsbn(),
                 book.getSubject(),
                 book.getStatus(),
@@ -94,7 +96,7 @@ public class BookRepository {
     public int delete(int id_Book) {
         String sqlDelete = "delete from Book where id_Book = ? ";
 
-       return jdbcTemplate.update(sqlDelete, id_Book);
+        return jdbcTemplate.update(sqlDelete, id_Book);
     }
 
 

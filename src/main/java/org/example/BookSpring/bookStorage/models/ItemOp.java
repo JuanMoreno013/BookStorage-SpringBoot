@@ -11,10 +11,10 @@ import java.time.LocalDate;
 public abstract class ItemOp {
 
     private int id;
-    private final String title;
-    private final String author;
-    private final int pages;
-    private final LocalDate dateWrite;
+    private  String title;
+    private  String author;
+    private  int pages;
+    private  LocalDate dateWrite;
 
     private static ChainValidator validateChain = new ChainValidator();
 
@@ -33,4 +33,9 @@ public abstract class ItemOp {
                         "\n Pages: " + getPages() +
                         "\n Date: " + getDateWrite();
     }
+//
+//    public void setDateWrite(LocalDate dateWrite) {
+//        this.dateWrite = validateChain.processValidator(dateWrite);
+//    }
+
 }
