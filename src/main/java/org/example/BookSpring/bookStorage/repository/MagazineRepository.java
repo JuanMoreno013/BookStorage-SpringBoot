@@ -4,20 +4,17 @@ import org.example.BookSpring.bookStorage.models.Magazine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Repository
 public class MagazineRepository {
 
-    private final JdbcTemplate jdbcTemplate;
-
     @Autowired
-    public MagazineRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private  JdbcTemplate jdbcTemplate;
 
     private static final RowMapper<Magazine> mapRow = (rs, rowNum) -> {
         Magazine magazine = new Magazine(
@@ -37,18 +34,18 @@ public class MagazineRepository {
 
 
     public List<Magazine> findAll() {
-        return jdbcTemplate.query("select * from \"Magazine\"", mapRow);
+        return jdbcTemplate.query("select * from Magazine", mapRow);
     }
 
     public void updateUserTaken(int id_Magazine, Magazine magazine) {
-        String sqlUpdate = "update \"Magazine\" set userTaken = ? where id_Magazine = ? ";
+        String sqlUpdate = "update Magazine set userTaken = ? where id_Magazine = ? ";
 
         jdbcTemplate.update(sqlUpdate, magazine.getUserTaken(), id_Magazine);
     }
 
     public int update(int id_Magazine, Magazine magazine) {
 
-        String sqlUpdateAll = "update \"Magazine\" set title = ?, author= ?, pages= ?, dateMagazine= ?, editorial= ?, volume =?, subject= ?,userTaken= ? " +
+        String sqlUpdateAll = "update Magazine set title = ?, author= ?, pages= ?, dateMagazine= ?, editorial= ?, volume =?, subject= ?,userTaken= ? " +
                 " where id_Magazine = ?  ";
 
         return jdbcTemplate.update(
@@ -56,7 +53,7 @@ public class MagazineRepository {
                 magazine.getTitle(),
                 magazine.getAuthor(),
                 magazine.getPages(),
-                magazine.getDateWrite(),
+                Date.valueOf(magazine.getDateWrite()),
                 magazine.getEditorial(),
                 magazine.getVolume(),
                 magazine.getSubject(),
@@ -67,7 +64,7 @@ public class MagazineRepository {
 
     public int save(Magazine magazine) {
 
-        String sqlSave = "insert into \"Magazine\" " +
+        String sqlSave = "insert into Magazine " +
                 "(title, author, pages, dateMagazine, editorial, volume, subject, userTaken) " +
                 "values(?,?,?,?,?,?,?,?)";
 
@@ -75,7 +72,7 @@ public class MagazineRepository {
                 magazine.getTitle(),
                 magazine.getAuthor(),
                 magazine.getPages(),
-                magazine.getDateWrite(),
+               Date.valueOf(magazine.getDateWrite()),
                 magazine.getEditorial(),
                 magazine.getVolume(),
                 magazine.getSubject(),
@@ -84,7 +81,7 @@ public class MagazineRepository {
 
     public Optional<Magazine> get(int id_Magazine) {
 
-        String sqlGetById = "select * from \"Magazine\" where id_Magazine = ? ";
+        String sqlGetById = "select * from Magazine where id_Magazine = ? ";
 
         List<Magazine> magazines = jdbcTemplate.query(sqlGetById,
                 mapRow, id_Magazine);
@@ -96,7 +93,7 @@ public class MagazineRepository {
     }
 
     public int delete(int id_Magazine) {
-        String sqlDelete = "delete from \"Magazine\" where id_Magazine = ? ";
+        String sqlDelete = "delete from Magazine where id_Magazine = ? ";
 
         return jdbcTemplate.update(sqlDelete, id_Magazine);
     }

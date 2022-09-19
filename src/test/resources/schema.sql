@@ -1,7 +1,7 @@
 
 --DROP TABLE IF EXISTS User CASCADE;
 
-CREATE TABLE Users
+create TABLE Users
 (
     id_User serial PRIMARY KEY NOT NULL,
     userName text NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE Users
 
 --DROP TABLE IF EXISTS Book;
 
-CREATE TABLE Book
+create TABLE Book
 (
     id_Book serial PRIMARY KEY NOT NULL ,
     title text NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE Book
 
 );
 
-CREATE TABLE Letter
+create TABLE Letter
 (
     id_Letter serial PRIMARY KEY NOT NULL,
     title text NOT NULL,
@@ -42,6 +42,24 @@ CREATE TABLE Letter
 
     subject text NOT NULL,
     place text NOT NULL,
+
+    userTaken integer ,
+
+    FOREIGN KEY (userTaken) REFERENCES Users
+
+);
+
+create TABLE Magazine
+(
+    id_Magazine serial PRIMARY KEY NOT NULL,
+    title text NOT NULL,
+    author text NOT NULL,
+    pages integer NOT NULL,
+    dateMagazine date NOT NULL,
+
+    subject text NOT NULL,
+    volume integer NOT NULL,
+    editorial text NOT NULL,
 
     userTaken integer ,
 

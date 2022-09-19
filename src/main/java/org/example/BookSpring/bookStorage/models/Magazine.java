@@ -9,11 +9,11 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public final class Magazine extends ItemOp {
-    private final int volume;
-    private final String subject;
-    private final String editorial;
+    private int volume;
+    private String subject;
+    private String editorial;
 
-    private  Integer userTaken;
+    private Integer userTaken;
 
     private static ChainValidator validateChain = new ChainValidator();
 
