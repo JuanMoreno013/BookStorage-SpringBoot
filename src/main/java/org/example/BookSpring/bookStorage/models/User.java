@@ -13,12 +13,12 @@ import java.time.LocalDate;
 @Setter
 public final class User {
 
-//    @Id
+    //    @Id
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
-    private final String name;
-    private final LocalDate dateOfBirth;
-    private final LocalDate dateItemTaken;
+    private String name;
+    private LocalDate dateOfBirth;
+    private LocalDate dateItemTaken;
 
     private static ChainValidator validateChain = new ChainValidator();
 
@@ -27,8 +27,6 @@ public final class User {
         this.dateOfBirth = validateChain.processValidator(dateOfBirth);
         this.dateItemTaken = validateChain.processValidator(dateItemTaken);
     }
-
-
 
 
 }

@@ -4,20 +4,17 @@ import org.example.BookSpring.bookStorage.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Repository
 public class UserRepository {
 
-    private final JdbcTemplate jdbcTemplate;
-
     @Autowired
-    public UserRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private JdbcTemplate jdbcTemplate;
 
     private static final RowMapper<User> mapRow = (rs, rowNum) -> {
         User user = new User(
@@ -32,38 +29,38 @@ public class UserRepository {
     };
 
     public List<User> findAll() {
-        return jdbcTemplate.query("select * from \"User\"", mapRow);
+        return jdbcTemplate.query("select * from Users", mapRow);
     }
 
     public int update(int id_User, User user) {
 
-        String sqlUpdateAll = "update \"User\" set userName = ?, dateBirth= ?, dateTakeItem= ?" +
+        String sqlUpdateAll = "update Users set userName = ?, dateBirth= ?, dateTakeItem= ?" +
                 " where id_User = ?  ";
 
-       return jdbcTemplate.update(
+        return jdbcTemplate.update(
                 sqlUpdateAll,
                 user.getName(),
-                user.getDateOfBirth(),
-                user.getDateItemTaken(),
+                Date.valueOf(user.getDateOfBirth()),
+                Date.valueOf(user.getDateItemTaken()),
                 id_User);
     }
 
 
     public int save(User user) {
 
-        String sqlSave = "insert into \"User\" " +
+        String sqlSave = "insert into Users " +
                 "(userName, dateBirth, dateTakeItem) " +
                 "values(?,?,?)";
 
         return jdbcTemplate.update(sqlSave,
                 user.getName(),
-                user.getDateOfBirth(),
-                user.getDateItemTaken());
+                Date.valueOf(user.getDateOfBirth()),
+                Date.valueOf(user.getDateItemTaken()));
     }
 
     public Optional<User> get(int id_User) {
 
-        String sqlGetById = "select * from \"User\" where id_User = ? ";
+        String sqlGetById = "select * from Users where id_User = ? ";
 
         List<User> users = jdbcTemplate.query(sqlGetById,
                 mapRow, id_User);
@@ -75,7 +72,7 @@ public class UserRepository {
     }
 
     public int delete(int id_User) {
-        String sqlDelete = "delete from \"User\" where id_User = ? ";
+        String sqlDelete = "delete from Users where id_User = ? ";
 
         return jdbcTemplate.update(sqlDelete, id_User);
     }
