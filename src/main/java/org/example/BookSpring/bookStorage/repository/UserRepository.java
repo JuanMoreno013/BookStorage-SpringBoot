@@ -65,10 +65,7 @@ public class UserRepository {
         List<User> users = jdbcTemplate.query(sqlGetById,
                 mapRow, id_User);
 
-        if (!users.isEmpty())
-            return users.stream().findFirst();
-
-        return Optional.empty();
+        return users.stream().findFirst();
     }
 
     public int delete(int id_User) {

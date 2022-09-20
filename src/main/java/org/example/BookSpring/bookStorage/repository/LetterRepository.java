@@ -16,7 +16,7 @@ public class LetterRepository {
     private JdbcTemplate jdbcTemplate;
 
     private static final RowMapper<Letter> mapRow = (rs, rowNum) -> {
-        Letter magazine = new Letter(
+        Letter letter = new Letter(
                 rs.getString("title"),
                 rs.getString("author"),
                 rs.getInt("pages"),
@@ -24,10 +24,10 @@ public class LetterRepository {
                 rs.getString("subject"),
                 rs.getString("place")
         );
-        magazine.setId(rs.getInt("id_Letter"));
-        magazine.setUserTaken(rs.getObject("userTaken", Integer.class));
+        letter.setId(rs.getInt("id_Letter"));
+        letter.setUserTaken(rs.getObject("userTaken", Integer.class));
 
-        return magazine;
+        return letter;
     };
 
 
@@ -74,13 +74,10 @@ public class LetterRepository {
 
         String sqlGetById = "select * from Letter where id_Letter = ? ";
 
-        List<Letter> magazines = jdbcTemplate.query(sqlGetById,
+        List<Letter> letters = jdbcTemplate.query(sqlGetById,
                 mapRow, id_Letter);
 
-        if (!magazines.isEmpty())
-            return magazines.stream().findFirst();
-
-        return Optional.empty();
+        return letters.stream().findFirst();
     }
 
     public int delete(int id_Letter) {

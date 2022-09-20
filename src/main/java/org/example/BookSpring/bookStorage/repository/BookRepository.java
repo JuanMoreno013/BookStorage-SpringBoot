@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,10 +86,7 @@ public class BookRepository {
         List<Book> books = jdbcTemplate.query(sqlGetById,
                 mapRow, id_Book);
 
-        if (!books.isEmpty())
-            return books.stream().findFirst();
-
-        return Optional.empty();
+        return books.stream().findFirst();
     }
 
     public int delete(int id_Book) {

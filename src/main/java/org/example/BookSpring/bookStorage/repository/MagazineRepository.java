@@ -14,7 +14,7 @@ import java.util.Optional;
 public class MagazineRepository {
 
     @Autowired
-    private  JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     private static final RowMapper<Magazine> mapRow = (rs, rowNum) -> {
         Magazine magazine = new Magazine(
@@ -68,11 +68,11 @@ public class MagazineRepository {
                 "(title, author, pages, dateMagazine, editorial, volume, subject, userTaken) " +
                 "values(?,?,?,?,?,?,?,?)";
 
-       return jdbcTemplate.update(sqlSave,
+        return jdbcTemplate.update(sqlSave,
                 magazine.getTitle(),
                 magazine.getAuthor(),
                 magazine.getPages(),
-               Date.valueOf(magazine.getDateWrite()),
+                Date.valueOf(magazine.getDateWrite()),
                 magazine.getEditorial(),
                 magazine.getVolume(),
                 magazine.getSubject(),
@@ -86,10 +86,7 @@ public class MagazineRepository {
         List<Magazine> magazines = jdbcTemplate.query(sqlGetById,
                 mapRow, id_Magazine);
 
-        if (!magazines.isEmpty())
-            return magazines.stream().findFirst();
-
-        return Optional.empty();
+        return magazines.stream().findFirst();
     }
 
     public int delete(int id_Magazine) {
