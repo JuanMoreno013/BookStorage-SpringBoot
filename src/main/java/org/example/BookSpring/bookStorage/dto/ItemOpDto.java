@@ -1,32 +1,23 @@
-package org.example.BookSpring.bookStorage.models;
+package org.example.BookSpring.bookStorage.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.BookSpring.bookStorage.validators.ChainValidator;
 
-import javax.persistence.*;
 import java.time.LocalDate;
-
-@MappedSuperclass
 @Data
 @NoArgsConstructor
-public abstract class ItemOp {
+public abstract class ItemOpDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "title")
     private  String title;
-    @Column(name = "author")
     private  String author;
-    @Column(name = "pages")
     private  int pages;
-    @Column(name = "date_write")
-    private  LocalDate date_write;
+    private LocalDate date_write;
 
     private static ChainValidator validateChain = new ChainValidator();
 
-    public ItemOp(String title, String author, int pages, LocalDate date_write) {
+    public ItemOpDto(String title, String author, int pages, LocalDate date_write) {
 
         this.title = validateChain.processValidator(title);
         this.author = validateChain.processValidator(author);
@@ -41,5 +32,4 @@ public abstract class ItemOp {
                         "\n Pages: " + getPages() +
                         "\n Date: " + getDate_write();
     }
-
 }
