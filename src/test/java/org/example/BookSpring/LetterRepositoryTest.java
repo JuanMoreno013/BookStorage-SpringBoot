@@ -107,7 +107,7 @@ public class LetterRepositoryTest {
     public void save_ReturnInteger_WhenTheLetterWasSaveCorrectly() {
 
         Letter letterTest = new Letter("New Topics", "Arnold Lox", 345, LocalDate.now(), "Fashion", "Princeton");
-        letterTest.setUserTaken(null);
+        letterTest.setUser_taken(null);
         daoLetterRepository.save(letterTest);
 
         assertEquals(1, daoLetterRepository.save(letterTest));
@@ -135,7 +135,7 @@ public class LetterRepositoryTest {
     @Test
     public void update_ReturnIntegerValue_WhenDoesNotUpdateLetterCorrectly() {
 
-        letter.setDateWrite(LocalDate.now().plusDays(2));
+        letter.setDate_write(LocalDate.now().plusDays(2));
 
         int checkUpdate = daoLetterRepository.update(10, letter);
         assertEquals(0, checkUpdate);

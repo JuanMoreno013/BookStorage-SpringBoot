@@ -1,8 +1,6 @@
 package org.example.BookSpring;
 
-import org.example.BookSpring.bookStorage.models.Book;
 import org.example.BookSpring.bookStorage.models.User;
-import org.example.BookSpring.bookStorage.repository.BookRepository;
 import org.example.BookSpring.bookStorage.repository.UserRepository;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -92,7 +90,7 @@ public class UserRepositoryTest {
         Optional<User> nUser = userRepository.get(2);
         assertTrue(nUser.isPresent());
         User user1 = nUser.get();
-        assertEquals(user1.getName(), user.getName());
+        assertEquals(user1.getUserName(), user.getUserName());
     }
 
     @Test
@@ -124,7 +122,7 @@ public class UserRepositoryTest {
 
     @Test
     public void update_ReturnsIntegerValue_WhenUpdateUserSuccess() {
-        user.setName("Carlos Ruiz");
+        user.setUserName("Carlos Ruiz");
 
         int checkUpdate = userRepository.update(2, user);
         assertEquals(1, checkUpdate);
@@ -133,7 +131,7 @@ public class UserRepositoryTest {
     @Test
     public void update_ReturnIntegerValue_WhenDoesNotUpdateUserCorrectly() {
 
-        user.setDateItemTaken(LocalDate.now().plusDays(2));
+        user.setDateTakeItem(LocalDate.now().plusDays(2));
 
         int checkUpdate = userRepository.update(10, user);
         assertEquals(0, checkUpdate);

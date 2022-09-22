@@ -39,9 +39,9 @@ public class UserRepository {
 
         return jdbcTemplate.update(
                 sqlUpdateAll,
-                user.getName(),
-                Date.valueOf(user.getDateOfBirth()),
-                Date.valueOf(user.getDateItemTaken()),
+                user.getUserName(),
+                Date.valueOf(user.getDateBirth()),
+                Date.valueOf(user.getDateTakeItem()),
                 id_User);
     }
 
@@ -53,9 +53,9 @@ public class UserRepository {
                 "values(?,?,?)";
 
         return jdbcTemplate.update(sqlSave,
-                user.getName(),
-                Date.valueOf(user.getDateOfBirth()),
-                Date.valueOf(user.getDateItemTaken()));
+                user.getUserName(),
+                Date.valueOf(user.getDateBirth()),
+                Date.valueOf(user.getDateTakeItem()));
     }
 
     public Optional<User> get(int id_User) {

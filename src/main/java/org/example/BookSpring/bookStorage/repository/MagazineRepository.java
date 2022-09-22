@@ -27,7 +27,7 @@ public class MagazineRepository {
                 rs.getString("editorial")
         );
         magazine.setId(rs.getInt("id_Magazine"));
-        magazine.setUserTaken(rs.getObject("userTaken", Integer.class));
+        magazine.setUser_taken(rs.getObject("userTaken", Integer.class));
 
         return magazine;
     };
@@ -40,7 +40,7 @@ public class MagazineRepository {
     public void updateUserTaken(int id_Magazine, Magazine magazine) {
         String sqlUpdate = "update Magazine set userTaken = ? where id_Magazine = ? ";
 
-        jdbcTemplate.update(sqlUpdate, magazine.getUserTaken(), id_Magazine);
+        jdbcTemplate.update(sqlUpdate, magazine.getUser_taken(), id_Magazine);
     }
 
     public int update(int id_Magazine, Magazine magazine) {
@@ -53,11 +53,11 @@ public class MagazineRepository {
                 magazine.getTitle(),
                 magazine.getAuthor(),
                 magazine.getPages(),
-                Date.valueOf(magazine.getDateWrite()),
+                Date.valueOf(magazine.getDate_write()),
                 magazine.getEditorial(),
                 magazine.getVolume(),
                 magazine.getSubject(),
-                magazine.getUserTaken(),
+                magazine.getUser_taken(),
                 id_Magazine);
     }
 
@@ -72,11 +72,11 @@ public class MagazineRepository {
                 magazine.getTitle(),
                 magazine.getAuthor(),
                 magazine.getPages(),
-                Date.valueOf(magazine.getDateWrite()),
+                Date.valueOf(magazine.getDate_write()),
                 magazine.getEditorial(),
                 magazine.getVolume(),
                 magazine.getSubject(),
-                magazine.getUserTaken());
+                magazine.getUser_taken());
     }
 
     public Optional<Magazine> get(int id_Magazine) {

@@ -29,7 +29,7 @@ public class BookRepository {
                 rs.getString("status")
         );
         book.setId(rs.getInt("id_Book"));
-        book.setUserTaken(rs.getObject("userTaken", Integer.class));
+        book.setUser_taken(rs.getObject("userTaken", Integer.class));
 
         return book;
     };
@@ -50,12 +50,12 @@ public class BookRepository {
                 book.getTitle(),
                 book.getAuthor(),
                 book.getPages(),
-                Date.valueOf(book.getDateWrite()),
+                Date.valueOf(book.getDate_write()),
                 book.getNsbn(),
                 book.getSubject(),
                 book.getStatus(),
                 book.getEditorial(),
-                book.getUserTaken(),
+                book.getUser_taken(),
                 id_Book);
 
     }
@@ -71,12 +71,12 @@ public class BookRepository {
                 book.getTitle(),
                 book.getAuthor(),
                 book.getPages(),
-                Date.valueOf(book.getDateWrite()),
+                Date.valueOf(book.getDate_write()),
                 book.getNsbn(),
                 book.getSubject(),
                 book.getStatus(),
                 book.getEditorial(),
-                book.getUserTaken());
+                book.getUser_taken());
     }
 
     public Optional<Book> get(int id_Book) {

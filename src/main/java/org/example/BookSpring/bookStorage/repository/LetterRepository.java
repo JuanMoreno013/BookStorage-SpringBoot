@@ -25,7 +25,7 @@ public class LetterRepository {
                 rs.getString("place")
         );
         letter.setId(rs.getInt("id_Letter"));
-        letter.setUserTaken(rs.getObject("userTaken", Integer.class));
+        letter.setUser_taken(rs.getObject("userTaken", Integer.class));
 
         return letter;
     };
@@ -46,10 +46,10 @@ public class LetterRepository {
                 magazine.getTitle(),
                 magazine.getAuthor(),
                 magazine.getPages(),
-                Date.valueOf(magazine.getDateWrite()),
+                Date.valueOf(magazine.getDate_write()),
                 magazine.getSubject(),
                 magazine.getPlace(),
-                magazine.getUserTaken(),
+                magazine.getUser_taken(),
                 id_Letter);
     }
 
@@ -64,10 +64,10 @@ public class LetterRepository {
                 magazine.getTitle(),
                 magazine.getAuthor(),
                 magazine.getPages(),
-                Date.valueOf(magazine.getDateWrite()),
+                Date.valueOf(magazine.getDate_write()),
                 magazine.getSubject(),
                 magazine.getPlace(),
-                magazine.getUserTaken());
+                magazine.getUser_taken());
     }
 
     public Optional<Letter> get(int id_Letter) {

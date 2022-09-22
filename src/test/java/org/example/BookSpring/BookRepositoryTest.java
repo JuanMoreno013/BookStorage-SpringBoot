@@ -109,7 +109,7 @@ public class BookRepositoryTest {
     public void save_ReturnInteger_WhenTheBookWasSaveCorrectly() {
 
         Book bookTest = new Book("Math Take 5 ", "Barton Frank", 987, LocalDate.now(), "910-92-00-1", "Master", "New", "Princeton");
-        bookTest.setUserTaken(null);
+        bookTest.setUser_taken(null);
         daoBookRepository.save(bookTest);
 
         assertEquals(1, daoBookRepository.save(bookTest));
@@ -137,7 +137,7 @@ public class BookRepositoryTest {
     @Test
     public void update_ReturnIntegerValue_WhenDoesNotUpdateBookCorrectly() {
 
-        book.setDateWrite(LocalDate.now().plusDays(2));
+        book.setDate_write(LocalDate.now().plusDays(2));
 
         int checkUpdate = daoBookRepository.update(10, book);
         assertEquals(0, checkUpdate);

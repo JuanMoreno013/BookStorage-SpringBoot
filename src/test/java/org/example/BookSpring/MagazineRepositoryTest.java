@@ -105,7 +105,7 @@ public class MagazineRepositoryTest {
     public void save_ReturnInteger_WhenTheMagazineWasSaveCorrectly() {
 
         Magazine magazineTest = new Magazine("Math Take 5 ", "Barton Frank", 987, LocalDate.now(), "Maths", 1, "Princeton");
-        magazineTest.setUserTaken(null);
+        magazineTest.setUser_taken(null);
         daoMagazineRepository.save(magazineTest);
 
         assertEquals(1, daoMagazineRepository.save(magazineTest));
@@ -133,7 +133,7 @@ public class MagazineRepositoryTest {
     @Test
     public void update_ReturnIntegerValue_WhenDoesNotUpdateMagazineCorrectly() {
 
-        magazine.setDateWrite(LocalDate.now().plusDays(2));
+        magazine.setDate_write(LocalDate.now().plusDays(2));
 
         int checkUpdate = daoMagazineRepository.update(10, magazine);
         assertEquals(0, checkUpdate);
