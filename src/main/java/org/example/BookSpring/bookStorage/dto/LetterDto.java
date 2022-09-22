@@ -1,33 +1,25 @@
-package org.example.BookSpring.bookStorage.models;
+package org.example.BookSpring.bookStorage.dto;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.example.BookSpring.bookStorage.validators.ChainValidator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "Letters")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@NamedQuery(query = "select u from Letter u", name = "query_find_all_letters")
-public final class Letter extends ItemOp {
-    @Column(name = "subject")
+public class LetterDto extends ItemOpDto {
     private String subject;
-    @Column(name = "place")
     private String place;
 
-    @Column(name = "user_taken")
     private Integer user_taken;
 
     private static ChainValidator validateChain = new ChainValidator();
 
-    public Letter(String title, String author, int pages, LocalDate dateWrite, String subject, String place) {
-        super(title, author, pages, dateWrite);
+    public LetterDto(String title, String author, int pages, LocalDate date_write, String subject, String place) {
+        super(title, author, pages, date_write);
 
         this.subject = validateChain.processValidator(subject);
         this.place = validateChain.processValidator(place);
