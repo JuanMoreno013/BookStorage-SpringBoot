@@ -1,86 +1,86 @@
 
-DROP TABLE IF EXISTS Users CASCADE;
+--DROP TABLE IF EXISTS Users CASCADE;
 
 CREATE TABLE IF NOT EXISTS Users
 (
-    id_User serial NOT NULL,
-    userName text NOT NULL,
-    dateBirth date NOT NULL,
-    dateTakeItem date NOT NULL,
+    id serial ,
+    user_name text NOT NULL,
+    date_birth date NOT NULL,
+    date_take_item date NOT NULL,
 
-    CONSTRAINT "pk_idName_User" PRIMARY KEY (id_User)
+    CONSTRAINT "pk_idName_User" PRIMARY KEY (id)
 );
 
 
-DROP TABLE IF EXISTS Book;
+--DROP TABLE IF EXISTS Books;
 
-CREATE TABLE IF NOT EXISTS Book
+CREATE TABLE IF NOT EXISTS Books
 (
-    id_Book serial NOT NULL,
+    id serial ,
     title text NOT NULL,
     author text NOT NULL,
     pages integer NOT NULL,
-    dateBook date NOT NULL,
+    date_write date NOT NULL,
 
     nsbn text NOT NULL,
     subject text NOT NULL,
     status text NOT NULL,
     editorial text NOT NULL,
 
-    userTaken integer ,
+    user_taken integer ,
 
 
-    CONSTRAINT "pk_id_Book" PRIMARY KEY (id_Book),
+    CONSTRAINT "pk_id_Book" PRIMARY KEY (id),
 
-    CONSTRAINT "fk_user_Book" FOREIGN KEY (userTaken)
-        REFERENCES Users (id_User) MATCH SIMPLE
+    CONSTRAINT "fk_user_Book" FOREIGN KEY (user_taken)
+        REFERENCES Users (id) MATCH SIMPLE
 
 );
 
-DROP TABLE IF EXISTS Letter;
+--DROP TABLE IF EXISTS Letters;
 
-CREATE TABLE IF NOT EXISTS Letter
+CREATE TABLE IF NOT EXISTS Letters
 (
-    id_Letter serial NOT NULL,
+    id serial NOT NULL,
     title text NOT NULL,
     author text NOT NULL,
     pages integer NOT NULL,
-    dateLetter date NOT NULL,
+    date_write date NOT NULL,
 
     subject text NOT NULL,
     place text NOT NULL,
 
-    userTaken integer ,
+    user_taken integer ,
 
 
-    CONSTRAINT "pk_id_Letter" PRIMARY KEY (id_Letter),
+    CONSTRAINT "pk_id_Letter" PRIMARY KEY (id),
 
-    CONSTRAINT "fk_user_Letter" FOREIGN KEY (userTaken)
-       REFERENCES Users (id_User) MATCH SIMPLE
+    CONSTRAINT "fk_user_Letter" FOREIGN KEY (user_taken)
+       REFERENCES Users (id) MATCH SIMPLE
 
 );
 
-DROP TABLE IF EXISTS Magazine;
+--DROP TABLE IF EXISTS Magazines;
 
-CREATE TABLE IF NOT EXISTS Magazine
+CREATE TABLE IF NOT EXISTS Magazines
 (
-    id_Magazine serial NOT NULL,
+    id serial NOT NULL,
     title text NOT NULL,
     author text NOT NULL,
     pages integer NOT NULL,
-    dateMagazine date NOT NULL,
+    date_write date NOT NULL,
 
     editorial text NOT NULL,
     volume integer NOT NULL,
     subject text NOT NULL,
 
-    userTaken integer ,
+    user_taken integer ,
 
 
-    CONSTRAINT "pk_id_Magazine" PRIMARY KEY (id_Magazine),
+    CONSTRAINT "pk_id_Magazine" PRIMARY KEY (id),
 
-    CONSTRAINT "fk_user_Magazine" FOREIGN KEY (userTaken)
-        REFERENCES Users (id_User) MATCH SIMPLE
+    CONSTRAINT "fk_user_Magazine" FOREIGN KEY (user_taken)
+        REFERENCES Users (id) MATCH SIMPLE
 
 );
 
