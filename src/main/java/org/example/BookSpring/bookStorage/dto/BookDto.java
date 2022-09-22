@@ -1,40 +1,28 @@
-package org.example.BookSpring.bookStorage.models;
+package org.example.BookSpring.bookStorage.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.example.BookSpring.bookStorage.validators.ChainValidator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 import java.time.LocalDate;
-@Entity
-@Table(name = "Books")
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@NamedQuery(query = "select u from Book u", name = "query_find_all_books")
-public final class Book extends ItemOp {
-
-    @Column(name = "nsbn")
+public class BookDto extends ItemOpDto {
     private String nsbn;
-    @Column(name = "subject")
     private String subject;
-    @Column(name = "status")
     private String status;
-    @Column(name = "editorial")
     private String editorial;
 
-    @Column(name = "user_taken")
-    private  Integer user_taken;
+    private Integer user_taken;
 
     private static ChainValidator validateChain = new ChainValidator();
 
-    public Book(String title, String author, int pages, LocalDate dateWrite, String subject, String nsbn,  String status, String editorial) {
+    public BookDto(String title, String author, int pages, LocalDate date_write, String subject, String nsbn, String status, String editorial) {
 
-        super(title, author, pages, dateWrite);
+        super(title, author, pages, date_write);
         this.subject = validateChain.processValidator(subject);
         this.nsbn = validateChain.processValidator(nsbn);
         this.editorial = validateChain.processValidator(editorial);
