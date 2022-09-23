@@ -1,50 +1,74 @@
 package org.example.BookSpring.bookStorage.service;
 
+import org.example.BookSpring.bookStorage.converter.UserConverter;
+import org.example.BookSpring.bookStorage.dto.UserDto;
 import org.example.BookSpring.bookStorage.exceptionhandler.ItemBadRequestException;
 import org.example.BookSpring.bookStorage.exceptionhandler.ItemNotFoundException;
 import org.example.BookSpring.bookStorage.models.User;
-import org.example.BookSpring.bookStorage.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
+@Transactional
 public class UserService {
 
-    private final UserRepository repository;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
-    public UserService(UserRepository repository) {
-        this.repository = repository;
+    private UserConverter converter;
+
+    public List<UserDto> getAll() {
+        Query query = entityManager.createNamedQuery("query_find_all_users", User.class);
+        List daoUserList = query.getResultList();
+        return converter.listEntityToDTO(daoUserList);
     }
 
-    public List<User> getAllUsers(){
-        return repository.findAll();
+    public UserDto save(UserDto userDto) {
+        Objects.requireNonNull(userDto);
+
+        User userI = converter.dtoToEntity(userDto);
+        entityManager.persist(userI);
+        return userDto;
     }
 
-    public User get(int userId) {
+    public UserDto get(int userDtoId) {
 
-        return repository.get(userId)
-                .orElseThrow(() -> new ItemNotFoundException(" NOT found user with ID : " + userId));
+        return Optional.of(converter.entityToDTO(entityManager.find(User.class, userDtoId)))
+                .orElseThrow(() -> new ItemNotFoundException(" NOT found User with ID : " + userDtoId));
+
     }
 
-    public Boolean save(User user) {
-        Objects.requireNonNull(user);
-
-        return repository.save(user) == 1;
-    }
-
-    public Boolean delete(int userId) {
-        if (userId < 1)
+    public Boolean delete(int userDtoId) {
+        if (userDtoId < 1)
             throw new ItemBadRequestException(" Wrong ID number! ");
 
-       return repository.delete(userId) ==1;
+        Optional<User> foundUser = Optional.of(entityManager.find(User.class, userDtoId));
+        foundUser.ifPresent((userId -> entityManager.remove(userId)));
+
+        return true;
     }
 
-    public Boolean update(int userId, User userItem) {
-        return repository.update(userId, userItem) == 1;
+    public Boolean update(int userDtoId, UserDto userDto) {
+
+        Optional<User> foundUser = Optional.of(entityManager.find(User.class, userDtoId));
+
+        foundUser.ifPresent((book -> {
+
+            User userEntity = converter.dtoToEntity(userDto);
+            userEntity.setId(userDtoId);
+            entityManager.merge(userEntity);
+        }));
+        return true;
+
     }
 
 }
