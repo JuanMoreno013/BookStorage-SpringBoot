@@ -1,8 +1,10 @@
 package org.example.BookSpring.bookStorage.controller;
 
+import org.example.BookSpring.bookStorage.dto.BookDto;
+import org.example.BookSpring.bookStorage.dto.TakenItemDto;
 import org.example.BookSpring.bookStorage.service.BookService;
-import org.example.BookSpring.bookStorage.models.Book;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,28 +20,34 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public List<Book> getAllBooks() {
+    public List<BookDto> getAllBooks() {
         return bookService.getAll();
     }
 
-    @GetMapping("/books/{bookId}")
-    public Book getBook(@PathVariable Integer bookId) {
-        return bookService.get(bookId);
+    @GetMapping("/books/{bookDtoId}")
+    public BookDto getBook(@PathVariable Integer bookDtoId) {
+        return bookService.get(bookDtoId);
     }
 
     @PostMapping("/books")
-    public Boolean addBook(@RequestBody Book book) {
-        return bookService.save(book);
+    @ResponseStatus(HttpStatus.CREATED)
+    public BookDto addBook(@RequestBody BookDto bookDto) {
+        return bookService.save(bookDto);
     }
 
-    @DeleteMapping("/books/{bookId}")
-    public Boolean deleteBook(@PathVariable Integer bookId) {
-        return bookService.delete(bookId);
+    @DeleteMapping("/books/{bookDtoId}")
+    public Boolean deleteBook(@PathVariable Integer bookDtoId) {
+        return bookService.delete(bookDtoId);
     }
 
-    @PutMapping("/books/{bookId}")
-    public Boolean updateBook(@PathVariable Integer bookId, @RequestBody Book book) {
-        return bookService.update(bookId, book);
+    @PutMapping("/books/{bookDtoId}")
+    public Boolean updateBook(@PathVariable Integer bookDtoId, @RequestBody BookDto bookDto) {
+        return bookService.update(bookDtoId, bookDto);
+    }
+
+    @PutMapping("/books/{bookDtoId}/takenBy")
+    public Boolean updateBookTakenByUser(@PathVariable Integer bookDtoId, @RequestBody TakenItemDto takenItemDto) {
+        return bookService.updateBookTakenBy(bookDtoId, takenItemDto);
     }
 
 }
