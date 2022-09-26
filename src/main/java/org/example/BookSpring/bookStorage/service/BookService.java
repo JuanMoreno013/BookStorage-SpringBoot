@@ -6,7 +6,6 @@ import org.example.BookSpring.bookStorage.dto.TakenItemDto;
 import org.example.BookSpring.bookStorage.exceptionhandler.ItemBadRequestException;
 import org.example.BookSpring.bookStorage.exceptionhandler.ItemNotFoundException;
 import org.example.BookSpring.bookStorage.models.Book;
-import org.example.BookSpring.bookStorage.models.User;
 import org.example.BookSpring.bookStorage.notification.NotificationCenter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +17,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 @Transactional
@@ -29,9 +29,10 @@ public class BookService {
     @Autowired
     private BookConverter converter;
 
+
     public List<BookDto> getAll() {
         Query query = entityManager.createNamedQuery("query_find_all_books", Book.class);
-        List daoBookList = query.getResultList();
+        List<Book> daoBookList = query.getResultList();
         return converter.listEntityToDTO(daoBookList);
 
     }
@@ -50,40 +51,45 @@ public class BookService {
     }
 
     public Boolean delete(int bookDtoId) {
+        AtomicBoolean checkDelete = new AtomicBoolean(true);
+
         if (bookDtoId < 1)
             throw new ItemBadRequestException(" Wrong ID number! ");
 
-        Optional<Book> foundBook = Optional.of(entityManager.find(Book.class, bookDtoId));
-        foundBook.ifPresent((bookId -> entityManager.remove(bookId)));
+        Optional<Book> foundBook = Optional.ofNullable(entityManager.find(Book.class, bookDtoId));
+        foundBook.ifPresentOrElse((bookId -> entityManager.remove(bookId)), () -> checkDelete.getAndSet(false));
 
         notificationCenter.sendNotification("book", " Book Removed !");
-        return true;
+        return checkDelete.get();
     }
 
     public Boolean update(int bookDtoId, BookDto bookDto) {
 
-        Optional<Book> foundBook = Optional.of(entityManager.find(Book.class, bookDtoId));
-        foundBook.ifPresent((book -> {
+        AtomicBoolean checkUpdate = new AtomicBoolean(true);
+
+        Optional<Book> foundBook = Optional.ofNullable(entityManager.find(Book.class, bookDtoId));
+        foundBook.ifPresentOrElse((book -> {
             Book bookEntity = converter.dtoToEntity(bookDto);
             bookEntity.setId(bookDtoId);
             entityManager.merge(bookEntity);
-        }));
-        return true;
+        }), () -> checkUpdate.getAndSet(false));
+        return checkUpdate.get();
     }
 
 
     public Boolean updateBookTakenBy(int bookDtoId, TakenItemDto takenItemDto) {
 
-        Optional<Book> foundBook = Optional.of(entityManager.find(Book.class, bookDtoId));
-        foundBook.ifPresent(book -> {
+        AtomicBoolean checkUpdate = new AtomicBoolean(true);
 
-            Book bookEntity = foundBook.get();
-            bookEntity.setUser_taken(takenItemDto.getUser_taken());
-            bookEntity.setId(bookDtoId);
+        Optional<Book> foundBook = Optional.ofNullable(entityManager.find(Book.class, bookDtoId));
+        foundBook.ifPresentOrElse(book -> {
 
-            entityManager.merge(bookEntity);
-        });
-        return true;
+            book.setUser_taken(takenItemDto.getUser_taken());
+            book.setId(bookDtoId);
+
+            entityManager.merge(book);
+        }, () -> checkUpdate.getAndSet(false));
+        return checkUpdate.get();
     }
 
 
