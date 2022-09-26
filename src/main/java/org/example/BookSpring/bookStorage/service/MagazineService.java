@@ -17,6 +17,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 @Transactional
@@ -50,32 +51,39 @@ public class MagazineService {
     }
 
     public Boolean delete(int magazineDtoId) {
+
+        AtomicBoolean checkDelete = new AtomicBoolean(true);
+
         if (magazineDtoId < 1)
             throw new ItemBadRequestException(" Wrong ID number! ");
 
-        Optional<Magazine> foundMagazine = Optional.of(entityManager.find(Magazine.class, magazineDtoId));
-        foundMagazine.ifPresent((magazineId -> entityManager.remove(magazineId)));
+        Optional<Magazine> foundMagazine = Optional.ofNullable(entityManager.find(Magazine.class, magazineDtoId));
+        foundMagazine.ifPresentOrElse((magazineId -> entityManager.remove(magazineId)), () -> checkDelete.getAndSet(false));
 
         notificationCenter.sendNotification("magazine", " Magazine Removed !");
-        return true;
+        return checkDelete.get();
     }
 
     public Boolean update(int magazineDtoId, MagazineDto magazineDto) {
 
-        Optional<Magazine> foundBook = Optional.of(entityManager.find(Magazine.class, magazineDtoId));
-        foundBook.ifPresent((magazine -> {
+        AtomicBoolean checkUpdate = new AtomicBoolean(true);
+
+        Optional<Magazine> foundBook = Optional.ofNullable(entityManager.find(Magazine.class, magazineDtoId));
+        foundBook.ifPresentOrElse((magazine -> {
 
             Magazine magazineEntity = converter.dtoToEntity(magazineDto);
             magazineEntity.setId(magazineDtoId);
             entityManager.merge(magazineEntity);
-        }));
-        return true;
+        }), () -> checkUpdate.getAndSet(false));
+        return checkUpdate.get();
     }
 
 
     public Boolean updateMagazineTakenBy(int magazineDtoId, TakenItemDto takenItemDto) {
 
-        Optional<Magazine> foundMagazine = Optional.of(entityManager.find(Magazine.class, magazineDtoId));
+        AtomicBoolean checkUpdate = new AtomicBoolean(true);
+
+        Optional<Magazine> foundMagazine = Optional.ofNullable(entityManager.find(Magazine.class, magazineDtoId));
         foundMagazine.ifPresent((magazine -> {
 
             Magazine magazineEntity = foundMagazine.get();
@@ -84,7 +92,7 @@ public class MagazineService {
 
             entityManager.merge(magazineEntity);
         }));
-        return true;
+        return checkUpdate.get();
     }
 
 
