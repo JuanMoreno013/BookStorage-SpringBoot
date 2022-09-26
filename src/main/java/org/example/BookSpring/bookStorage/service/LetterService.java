@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 @Service
@@ -39,7 +40,7 @@ public class LetterService {
     }
 
     public LetterDto get(int letterDtoId) {
-        return Optional.of(converter.entityToDTO(entityManager.find(Letter.class, letterDtoId)))
+        return Optional.ofNullable(converter.entityToDTO(entityManager.find(Letter.class, letterDtoId)))
                 .orElseThrow(() -> new ItemNotFoundException(" NOT found Book with ID : " + letterDtoId));
     }
 
@@ -53,33 +54,37 @@ public class LetterService {
     }
 
     public Boolean delete(int letterDtoId) {
+        AtomicBoolean checkDelete = new AtomicBoolean(true);
+
         if (letterDtoId < 1)
             throw new ItemBadRequestException(" Wrong ID number! ");
 
-        Optional<Letter> foundLetter = Optional.of(entityManager.find(Letter.class, letterDtoId));
-        foundLetter.ifPresent((letterId -> entityManager.remove(letterId)));
+        Optional<Letter> foundLetter = Optional.ofNullable(entityManager.find(Letter.class, letterDtoId));
+        foundLetter.ifPresentOrElse((letterId -> entityManager.remove(letterId)), () -> checkDelete.getAndSet(false));
 
         notificationCenter.sendNotification("letter", " Letter Removed !");
-        return true;
-
+        return checkDelete.get();
     }
 
     public Boolean update(int letterDtoId, LetterDto letterDto) {
 
-        Optional<Letter> foundLetter = Optional.of(entityManager.find(Letter.class, letterDtoId));
-        foundLetter.ifPresent((letter -> {
+        AtomicBoolean checkUpdate = new AtomicBoolean(true);
+
+        Optional<Letter> foundLetter = Optional.ofNullable(entityManager.find(Letter.class, letterDtoId));
+        foundLetter.ifPresentOrElse((letter -> {
             Letter letterEntity = converter.dtoToEntity(letterDto);
             letterEntity.setId(letterDtoId);
             entityManager.merge(letterEntity);
-        }));
-        return true;
+        }), () -> checkUpdate.getAndSet(false));
+
+        return checkUpdate.get();
 
     }
 
     public Boolean updateLetterTakenBy(int letterDtoId, TakenItemDto takenItemDto) {
 
-        Optional<Letter> foundLetter = Optional.of(entityManager.find(Letter.class, letterDtoId));
-        foundLetter.ifPresent(book -> {
+        Optional<Letter> foundLetter = Optional.ofNullable(entityManager.find(Letter.class, letterDtoId));
+        foundLetter.ifPresent(letter -> {
 
             Letter letterEntity = foundLetter.get();
             letterEntity.setUser_taken(takenItemDto.getUser_taken());
