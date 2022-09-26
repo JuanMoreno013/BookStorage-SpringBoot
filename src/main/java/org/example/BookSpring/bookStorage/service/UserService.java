@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 @Transactional
@@ -42,32 +43,37 @@ public class UserService {
 
     public UserDto get(int userDtoId) {
 
-        return Optional.of(converter.entityToDTO(entityManager.find(User.class, userDtoId)))
+        return Optional.ofNullable(converter.entityToDTO(entityManager.find(User.class, userDtoId)))
                 .orElseThrow(() -> new ItemNotFoundException(" NOT found User with ID : " + userDtoId));
 
     }
 
     public Boolean delete(int userDtoId) {
+
+        AtomicBoolean checkDelete = new AtomicBoolean(true);
+
         if (userDtoId < 1)
             throw new ItemBadRequestException(" Wrong ID number! ");
 
-        Optional<User> foundUser = Optional.of(entityManager.find(User.class, userDtoId));
-        foundUser.ifPresent((userId -> entityManager.remove(userId)));
+        Optional<User> foundUser = Optional.ofNullable(entityManager.find(User.class, userDtoId));
+        foundUser.ifPresentOrElse((userId -> entityManager.remove(userId)), () -> checkDelete.getAndSet(false));
 
-        return true;
+        return checkDelete.get();
     }
 
     public Boolean update(int userDtoId, UserDto userDto) {
 
-        Optional<User> foundUser = Optional.of(entityManager.find(User.class, userDtoId));
+        AtomicBoolean checkUpdate = new AtomicBoolean(true);
 
-        foundUser.ifPresent((book -> {
+        Optional<User> foundUser = Optional.ofNullable(entityManager.find(User.class, userDtoId));
+
+        foundUser.ifPresentOrElse((book -> {
 
             User userEntity = converter.dtoToEntity(userDto);
             userEntity.setId(userDtoId);
             entityManager.merge(userEntity);
-        }));
-        return true;
+        }), () -> checkUpdate.getAndSet(false));
+        return checkUpdate.get();
 
     }
 
