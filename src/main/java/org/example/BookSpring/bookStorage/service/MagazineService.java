@@ -66,33 +66,28 @@ public class MagazineService {
 
     public Boolean update(int magazineDtoId, MagazineDto magazineDto) {
 
-        AtomicBoolean checkUpdate = new AtomicBoolean(true);
-
-        Optional<Magazine> foundBook = Optional.ofNullable(entityManager.find(Magazine.class, magazineDtoId));
-        foundBook.ifPresentOrElse((magazine -> {
-
+        if (entityManager.find(Magazine.class, magazineDtoId) != null) {
             Magazine magazineEntity = converter.dtoToEntity(magazineDto);
             magazineEntity.setId(magazineDtoId);
             entityManager.merge(magazineEntity);
-        }), () -> checkUpdate.getAndSet(false));
-        return checkUpdate.get();
+            return true;
+        }
+        return false;
     }
 
 
     public Boolean updateMagazineTakenBy(int magazineDtoId, TakenItemDto takenItemDto) {
 
-        AtomicBoolean checkUpdate = new AtomicBoolean(true);
+        Magazine magazine = entityManager.find(Magazine.class, magazineDtoId);
 
-        Optional<Magazine> foundMagazine = Optional.ofNullable(entityManager.find(Magazine.class, magazineDtoId));
-        foundMagazine.ifPresent((magazine -> {
+        if (magazine != null) {
+            magazine.setUser_taken(takenItemDto.getUser_taken());
+            magazine.setId(magazineDtoId);
+            entityManager.merge(magazine);
+            return true;
 
-            Magazine magazineEntity = foundMagazine.get();
-            magazineEntity.setUser_taken(takenItemDto.getUser_taken());
-            magazineEntity.setId(magazineDtoId);
-
-            entityManager.merge(magazineEntity);
-        }));
-        return checkUpdate.get();
+        }
+        return false;
     }
 
 

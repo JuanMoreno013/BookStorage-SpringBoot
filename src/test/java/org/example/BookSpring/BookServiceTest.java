@@ -165,7 +165,7 @@ public class BookServiceTest {
         TakenItemDto userId = new TakenItemDto(1);
 
         Mockito.when(entityManager.find(Book.class, 2)).thenReturn(bookEntity);
-        Boolean checkUpdate = bookService.updateBookTakenBy(1, userId);
+        Boolean checkUpdate = bookService.updateBookTakenBy(2, userId);
 
         assertEquals(true, checkUpdate);
     }
@@ -176,7 +176,7 @@ public class BookServiceTest {
         TakenItemDto userId = new TakenItemDto(null);
 
         Mockito.when(entityManager.find(Book.class, 2)).thenReturn(bookEntity);
-        Boolean checkUpdate = bookService.updateBookTakenBy(1, userId);
+        Boolean checkUpdate = bookService.updateBookTakenBy(2, userId);
 
         assertEquals(true, checkUpdate);
     }

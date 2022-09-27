@@ -162,7 +162,7 @@ public class LetterServiceTest {
         TakenItemDto userId = new TakenItemDto(1);
 
         Mockito.when(entityManager.find(Letter.class, 2)).thenReturn(letterEntity);
-        Boolean checkUpdate = letterService.updateLetterTakenBy(1, userId);
+        Boolean checkUpdate = letterService.updateLetterTakenBy(2, userId);
 
         assertEquals(true, checkUpdate);
     }
@@ -173,7 +173,7 @@ public class LetterServiceTest {
         TakenItemDto userId = new TakenItemDto(null);
 
         Mockito.when(entityManager.find(Letter.class, 2)).thenReturn(letterEntity);
-        Boolean checkUpdate = letterService.updateLetterTakenBy(1, userId);
+        Boolean checkUpdate = letterService.updateLetterTakenBy(2, userId);
 
         assertEquals(true, checkUpdate);
     }

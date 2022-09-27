@@ -163,7 +163,7 @@ public class MagazineServiceTest {
         TakenItemDto userId = new TakenItemDto(1);
 
         Mockito.when(entityManager.find(Magazine.class, 2)).thenReturn(magazineEntity);
-        Boolean checkUpdate = magazineService.updateMagazineTakenBy(1, userId);
+        Boolean checkUpdate = magazineService.updateMagazineTakenBy(2, userId);
 
         assertEquals(true, checkUpdate);
     }
@@ -174,7 +174,7 @@ public class MagazineServiceTest {
         TakenItemDto userId = new TakenItemDto(null);
 
         Mockito.when(entityManager.find(Magazine.class, 2)).thenReturn(magazineEntity);
-        Boolean checkUpdate = magazineService.updateMagazineTakenBy(1, userId);
+        Boolean checkUpdate = magazineService.updateMagazineTakenBy(2, userId);
 
         assertEquals(true, checkUpdate);
     }

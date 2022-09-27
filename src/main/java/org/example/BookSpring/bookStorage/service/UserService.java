@@ -63,18 +63,14 @@ public class UserService {
 
     public Boolean update(int userDtoId, UserDto userDto) {
 
-        AtomicBoolean checkUpdate = new AtomicBoolean(true);
-
-        Optional<User> foundUser = Optional.ofNullable(entityManager.find(User.class, userDtoId));
-
-        foundUser.ifPresentOrElse((book -> {
+        if (entityManager.find(User.class, userDtoId) != null) {
 
             User userEntity = converter.dtoToEntity(userDto);
             userEntity.setId(userDtoId);
             entityManager.merge(userEntity);
-        }), () -> checkUpdate.getAndSet(false));
-        return checkUpdate.get();
-
+            return true;
+        }
+        return false;
     }
 
 }

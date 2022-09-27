@@ -65,31 +65,28 @@ public class BookService {
 
     public Boolean update(int bookDtoId, BookDto bookDto) {
 
-        AtomicBoolean checkUpdate = new AtomicBoolean(true);
-
-        Optional<Book> foundBook = Optional.ofNullable(entityManager.find(Book.class, bookDtoId));
-        foundBook.ifPresentOrElse((book -> {
+        if (entityManager.find(Book.class, bookDtoId) != null) {
             Book bookEntity = converter.dtoToEntity(bookDto);
             bookEntity.setId(bookDtoId);
             entityManager.merge(bookEntity);
-        }), () -> checkUpdate.getAndSet(false));
-        return checkUpdate.get();
+            return true;
+        }
+        return false;
     }
 
 
     public Boolean updateBookTakenBy(int bookDtoId, TakenItemDto takenItemDto) {
 
-        AtomicBoolean checkUpdate = new AtomicBoolean(true);
+        Book book = entityManager.find(Book.class, bookDtoId);
 
-        Optional<Book> foundBook = Optional.ofNullable(entityManager.find(Book.class, bookDtoId));
-        foundBook.ifPresentOrElse(book -> {
-
+        if (book != null) {
             book.setUser_taken(takenItemDto.getUser_taken());
             book.setId(bookDtoId);
-
             entityManager.merge(book);
-        }, () -> checkUpdate.getAndSet(false));
-        return checkUpdate.get();
+
+            return true;
+        }
+        return false;
     }
 
 

@@ -68,31 +68,28 @@ public class LetterService {
 
     public Boolean update(int letterDtoId, LetterDto letterDto) {
 
-        AtomicBoolean checkUpdate = new AtomicBoolean(true);
+        if (entityManager.find(Letter.class, letterDtoId) != null) {
 
-        Optional<Letter> foundLetter = Optional.ofNullable(entityManager.find(Letter.class, letterDtoId));
-        foundLetter.ifPresentOrElse((letter -> {
             Letter letterEntity = converter.dtoToEntity(letterDto);
             letterEntity.setId(letterDtoId);
             entityManager.merge(letterEntity);
-        }), () -> checkUpdate.getAndSet(false));
-
-        return checkUpdate.get();
-
+            return true;
+        }
+        return false;
     }
 
     public Boolean updateLetterTakenBy(int letterDtoId, TakenItemDto takenItemDto) {
 
-        Optional<Letter> foundLetter = Optional.ofNullable(entityManager.find(Letter.class, letterDtoId));
-        foundLetter.ifPresent(letter -> {
+        Letter letter = entityManager.find(Letter.class, letterDtoId);
 
-            Letter letterEntity = foundLetter.get();
-            letterEntity.setUser_taken(takenItemDto.getUser_taken());
-            letterEntity.setId(letterDtoId);
+        if (letter != null) {
+            letter.setUser_taken(takenItemDto.getUser_taken());
+            letter.setId(letterDtoId);
+            entityManager.merge(letter);
 
-            entityManager.merge(letterEntity);
-        });
-        return true;
+            return true;
+        }
+        return false;
     }
 
 
