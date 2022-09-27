@@ -1153,7 +1153,7 @@ URI: `/users/{userID}`
 **Parameter Content type:**
 ` userID` <br>
 type: Integer <br>
-Description: ID of letter to delete
+Description: ID of user to delete
 
 ##### **Responses:**
 
@@ -1168,7 +1168,7 @@ Code <CODE> 400 </CODE>
 <br>
 Code <CODE> 405 </CODE>
 &nbsp;&nbsp;&nbsp;&nbsp;
-<STATUS> Method not allowed </STATUS> if you don't put a leter ID
+<STATUS> Method not allowed </STATUS> if you don't put a user ID
 <br>
 
 </REQUEST>
@@ -1184,7 +1184,7 @@ URI: `/users/8`
 
 ##### -PUT
 
-Modify elements to one specific letter using their ID.
+Modify elements to one specific user using their ID.
 
 URI: `/users/{usersID}`
 
@@ -1192,7 +1192,7 @@ URI: `/users/{usersID}`
 <br>
 `usersID` <br>
 &nbsp;type: Integer <br>
-&nbsp;Description: ID of letter to modify
+&nbsp;Description: ID of user to modify
 <br>  &nbsp;&nbsp;&nbsp;&nbsp;
 
 `application/json`
@@ -1218,7 +1218,7 @@ Code <CODE> 400 </CODE>
 <br>
 Code <CODE> 405 </CODE>
 &nbsp;&nbsp;&nbsp;&nbsp;
-<STATUS> Method not allowed </STATUS> , if you don't put a letter ID
+<STATUS> Method not allowed </STATUS> , if you don't put a user ID
 <br>
 <br>
 </REQUEST>
@@ -1228,7 +1228,7 @@ Code <CODE> 405 </CODE>
 URI: `/users/5`
 
 `{` <br>
-`"userName": "Martin Dario",` <br>
+`"userName": "Martin Clark",` <br>
 `"dateBirth": "1998-05-10",` <br>
 `"dateTakeItem": "2021-03-11"` <br>
 `}` <br>
